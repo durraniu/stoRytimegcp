@@ -1,0 +1,14 @@
+Package: stoRytimegcp
+Title: Shiny app for creating stories
+Version: 0.0.0.9000
+Authors@R: 
+    person("UMAIR", "DURRANI", , "umairdurrani@outlook.com", role = c("aut", "cre"))
+Description: PKG_DESC.
+License: MIT + file LICENSE
+Imports: 
+    config,
+    golem,
+    shiny
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
