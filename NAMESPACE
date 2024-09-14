@@ -2,7 +2,9 @@
 
 export(run_app)
 import(bslib)
+import(lexicon)
 import(shiny)
+import(stringr)
 importFrom(golem,activate_js)
 importFrom(golem,add_resource_path)
 importFrom(golem,bundle_resources)

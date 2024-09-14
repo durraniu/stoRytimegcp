@@ -27,8 +27,6 @@ req_single_image <- function(prompt,
     httr2::req_method("POST")
 }
 
-
-
 #' Get image if request is successful
 #'
 #' @param response Response from Workers AI Model API

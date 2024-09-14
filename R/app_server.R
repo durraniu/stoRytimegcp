@@ -9,42 +9,65 @@ app_server <- function(input, output, session) {
   story <- reactiveVal()
   all_imgs <- reactiveVal()
 
+  # Check story prompt
+  story_prompt <- reactive({
+    input$story_prompt
+  })
+
+  num_of_sentences <- reactive({
+    input$num_of_sentences
+  })
+
 
   observeEvent(input$create_story, {
 
-    if (input$story_prompt != ""){
+    if (story_prompt() != ""){
 
       # Get story from Workers AI model
       new_story <- get_story(
-        prompt = input$story_prompt,
-        num_of_sentences = input$num_of_sentences
+        prompt = story_prompt(),
+        num_of_sentences = num_of_sentences()
       )
+
+      # Process the story
+      if (is.null(new_story)){
+        new_story <- NULL
+      } else {
+          check_profanity <- sapply(new_story, test_profanity)
+          if (all(check_profanity == FALSE)){
+            new_story <- new_story
+          } else {
+            new_story <- NULL
+          }
+      }
 
       story(new_story)
 
       # Instructions for drawing each scene
       image_prompt <- paste0(
         "The background information for this scene is: ",
-        input$story_prompt,
+        story_prompt(),
         ".
         ",
         input$drawing_instructions
       )
 
       # Get images from Workers AI model
-      reqs <- lapply(
-        story(),
-        function(x){
-          req_single_image(x, image_prompt)
-        }
-      )
+      if (is.null(story())){
+        all_imgs(NULL)
+      } else {
+        reqs <- lapply(
+          story(),
+          function(x){
+            req_single_image(x, image_prompt)
+          }
+        )
+        resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
 
-      resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
-
-      # All images
-      new_all_imgs <- lapply(resps, get_image)
-      all_imgs(new_all_imgs)
-
+        # All images
+        new_all_imgs <- lapply(resps, get_image)
+        all_imgs(new_all_imgs)
+      }
     }
 
   }, ignoreInit = TRUE)
@@ -53,8 +76,12 @@ app_server <- function(input, output, session) {
 
   observeEvent(input$create_story | input$update_theme, {
 
-    if (!(length(story()) == length(all_imgs()))){
+    if (is.null(story()) | is.null(all_imgs())){
+      shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
+    } else if (!(length(story()) == length(all_imgs()))){
       shinyalert::shinyalert("Oops!", "Something went wrong. Try again!", type = "error")
+    } else if (length(story()) < 3){
+      shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
     } else {
       quarto::quarto_render(input = app_sys("app/www/example.qmd"),
                             output_format = "all",
@@ -93,9 +120,10 @@ app_server <- function(input, output, session) {
     # Add a cache-busting query parameter with the current timestamp
     cache_buster <- Sys.time()
 
-    # if (!file.exists(file_path)){
-    #   return(tags$p("Waiting for the story..."))
-    # }
+    # Check if file exists before rendering the iframe
+    if (!file.exists(app_sys(paste0("app/", file_path)))) {
+      return(tags$p("Waiting for the story..."))
+    }
 
     tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
                 width="100%",

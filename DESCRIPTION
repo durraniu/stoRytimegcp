@@ -12,10 +12,12 @@ Imports:
     config,
     golem,
     httr2,
+    lexicon,
     quarto,
     rvest,
     shiny,
     shinyalert,
+    stringr,
     utils
 Encoding: UTF-8
 LazyData: true

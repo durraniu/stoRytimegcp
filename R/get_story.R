@@ -15,6 +15,10 @@ get_story <- function(prompt,
                       API_KEY = Sys.getenv("API_KEY"),
                       base_url = cf_base_url()){
 
+  if (is.null(prompt) | num_of_sentences < 3){
+    return(NULL)
+  }
+
   url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct")
 
   # message("Sending request to get story with", API_KEY, " and ", ACCOUNT_ID)
@@ -38,6 +42,7 @@ get_story <- function(prompt,
         )
       ))) |>
     httr2::req_method("POST") |>
+    httr2::req_error(is_error = \(resp) FALSE) |>
     httr2::req_perform() |>
     httr2::resp_body_json()
 

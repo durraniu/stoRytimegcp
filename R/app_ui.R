@@ -29,7 +29,8 @@ app_ui <- function(request) {
           ),
           numericInput("num_of_sentences",
                        label = "Number of sentences:",
-                       value = 5, min = 2, max = 10),
+                       value = 5, #min = 3, max = 10
+                       ),
           textAreaInput(
             "drawing_instructions",
             label = "Instructions for drawing images:",
@@ -37,11 +38,17 @@ app_ui <- function(request) {
             width = "100%",
             height = "200px"
           ),
+          textInput(
+            "story_title",
+            label = "Provide a story title:",
+            value = "stoRy time with shiny and quarto"
+          ),
           # bslib::input_task_button("create_story", "Create Story")
           actionButton("create_story", "Create Story")
         ),
 
         card(
+          id = "story_card",
           card_header(
             "Story",
             popover(
@@ -52,11 +59,6 @@ app_ui <- function(request) {
                 label = "Select theme:",
                 choices = c("dark", "beige", "blood", "league", "moon", "night",
                             "serif", "simple", "sky", "solarized", "default")
-              ),
-              textInput(
-                "story_title",
-                label = "Provide a story title:",
-                value = "stoRy time with shiny and quarto"
               ),
               # bslib::input_task_button("update_theme", "Update Theme"),
               actionButton("update_theme", "Update Theme"),
@@ -96,5 +98,12 @@ golem_add_external_resources <- function() {
     # for example, you can add shinyalert::useShinyalert()
     shinyalert::useShinyalert(force = TRUE),
     useBusyIndicators(),
+    tags$script(HTML('
+      $(document).on("click", "#create_story", function() {
+        $("html, body").animate({
+          scrollTop: $("#story_card").offset().top
+        }, 1000);
+      });
+    '))
   )
 }
