@@ -77,11 +77,14 @@ app_server <- function(input, output, session) {
   observeEvent(input$create_story | input$update_theme, {
 
     if (is.null(story()) | is.null(all_imgs())){
-      shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
+      # shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
+      showNotification("Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
     } else if (!(length(story()) == length(all_imgs()))){
-      shinyalert::shinyalert("Oops!", "Something went wrong. Try again!", type = "error")
+      # shinyalert::shinyalert("Oops!", "Something went wrong. Try again!", type = "error")
+      showNotification("Oops! Something went wrong. Try again!", type = "error")
     } else if (length(story()) < 3){
-      shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
+      # shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
+      showNotification("Hold on! Please specify > 2 sentences.", type = "info")
     } else {
       quarto::quarto_render(input = app_sys("app/www/example.qmd"),
                             output_format = "all",

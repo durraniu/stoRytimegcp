@@ -96,8 +96,9 @@ golem_add_external_resources <- function() {
     ),
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()
-    shinyalert::useShinyalert(force = TRUE),
+    # shinyalert::useShinyalert(force = TRUE),
     useBusyIndicators(),
+    htmltools::findDependencies(selectInput("test", "test", NULL)),
     tags$script(HTML('
       $(document).on("click", "#create_story", function() {
         $("html, body").animate({
