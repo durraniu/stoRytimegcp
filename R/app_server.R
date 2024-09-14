@@ -128,6 +128,10 @@ app_server <- function(input, output, session) {
       return(tags$p("Waiting for the story..."))
     }
 
+    # tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
+    #             width="100%",
+    #             height=600)
+
     tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
                 width="100%",
                 height=600)

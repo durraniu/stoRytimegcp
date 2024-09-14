@@ -55,6 +55,7 @@ app_ui <- function(request) {
               placement = "right",
               bsicons::bs_icon("gear", class = "ms-auto"),
               selectInput(
+                selectize = FALSE,
                 "story_theme",
                 label = "Select theme:",
                 choices = c("dark", "beige", "blood", "league", "moon", "night",
