@@ -71,7 +71,7 @@ app_server <- function(input, output, session) {
                               story = story(),
                               imgs = lapply(all_imgs(), base64enc::base64encode)
                             ),
-                            quiet = TRUE
+                            quiet = FALSE
       )
     }
 
