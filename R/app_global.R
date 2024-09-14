@@ -1,0 +1,1 @@
+drawing_instructions <- "This scene should be illustrated in a storybook style with soft, pastel colors, whimsical and child-friendly illustrations with gentle lines. The image should evoke warmth and wonder, resembling hand-drawn artwork with simplicity and charm, like classic fairy tales."

@@ -19,7 +19,7 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "stoRytimegcp", # The name of the golem package containing the app (typically lowercase, no underscore or periods)
+  pkg_name = "storytimegcp", # The name of the golem package containing the app (typically lowercase, no underscore or periods)
   pkg_title = "Shiny app for creating stories", # What the Package Does (One Line, Title Case, No Period)
   pkg_description = "PKG_DESC.", # What the package does (one paragraph).
   authors = person(
@@ -65,7 +65,7 @@ usethis::use_git()
 ## Sets the remote associated with 'name' to 'url'
 usethis::use_git_remote(
   name = "origin",
-  url = "https://github.com/<OWNER>/<REPO>.git"
+  url = "https://github.com/durraniu/stoRytimegcp.git"
 )
 
 # You're now set! ----

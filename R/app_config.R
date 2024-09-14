@@ -9,7 +9,7 @@
 #'
 #' @noRd
 app_sys <- function(...) {
-  system.file(..., package = "stoRytimegcp")
+  system.file(..., package = "storytimegcp")
 }
 
 
