@@ -13,6 +13,7 @@ Imports:
     golem,
     httr2,
     lexicon,
+    pkgload,
     quarto,
     shiny,
     stringr,

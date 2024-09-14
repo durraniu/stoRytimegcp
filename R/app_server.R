@@ -37,6 +37,7 @@ app_server <- function(input, output, session) {
 
   observeEvent(input$create_story, {
 
+
     if (story_prompt() != ""){
 
       # Get story from Workers AI model
@@ -91,6 +92,15 @@ app_server <- function(input, output, session) {
 
 
   observeEvent(input$create_story | input$update_theme, {
+    req(story(), all_imgs())
+
+    previously_generated_file <- app_sys(paste0("app/", "www/generated_example.html"))
+
+    if (file.exists(previously_generated_file)) {
+      file.remove(previously_generated_file)
+    }
+
+
 
     if (is.null(story()) | is.null(all_imgs())){
       # shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
@@ -100,7 +110,7 @@ app_server <- function(input, output, session) {
       showNotification("Oops! Something went wrong. Try again!", type = "error")
     } else if (length(story()) < 3){
       # shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
-      showNotification("Hold on! Please specify > 2 sentences.", type = "info")
+      showNotification("Hold on! Either you specified or the API produced less than 3 sentences. Either specify > 2 sentences or try again.", type = "warning")
     } else {
       # Create a temp directory
       temp_dir <- tempdir()
@@ -141,6 +151,7 @@ app_server <- function(input, output, session) {
 
       # Dynamically serve the updated HTML file from the temp folder
       output$html_story <- renderUI({
+        # req(story(), all_imgs())
         # Check if the file exists before serving
         if (file.exists(target_html)) {
           tags$iframe(

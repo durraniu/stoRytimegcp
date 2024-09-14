@@ -12,3 +12,6 @@ $run_dev.*
 ^Dockerfile$
 ^\.dockerignore$
 ^\.$
+^app\.R$
+^rsconnect$
+^\.rscignore$
