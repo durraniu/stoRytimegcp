@@ -37,7 +37,7 @@ app_ui <- function(request) {
             width = "100%",
             height = "200px"
           ),
-          input_task_button("create_story", "Create Story")
+          bslib::input_task_button("create_story", "Create Story")
         ),
 
         card(
@@ -57,7 +57,7 @@ app_ui <- function(request) {
                 label = "Provide a story title:",
                 value = "stoRy time with shiny and quarto"
               ),
-              input_task_button("update_theme", "Update Theme"),
+              bslib::input_task_button("update_theme", "Update Theme"),
               title = "Presentation settings"
             ),
             class = "d-flex align-items-center gap-1"
