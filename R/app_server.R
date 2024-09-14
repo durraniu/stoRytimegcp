@@ -121,7 +121,7 @@ app_server <- function(input, output, session) {
     file_path <- "www/example.html"
 
     # Add a cache-busting query parameter with the current timestamp
-    cache_buster <- Sys.time()
+    # cache_buster <- Sys.time()
 
     # Check if file exists before rendering the iframe
     if (!file.exists(app_sys(paste0("app/", file_path)))) {
@@ -132,7 +132,7 @@ app_server <- function(input, output, session) {
     #             width="100%",
     #             height=600)
 
-    tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
+    tags$iframe(src= file_path,
                 width="100%",
                 height=600)
   })
