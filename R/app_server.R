@@ -19,6 +19,22 @@ app_server <- function(input, output, session) {
   })
 
 
+
+  output$html_story <- renderUI({
+
+    file_path <- "www/example.html"
+
+    # Check if file exists before rendering the iframe
+    if (!file.exists(app_sys(paste0("app/", file_path)))) {
+      return(tags$p("Waiting for the story..."))
+    }
+
+    tags$iframe(src= file_path,
+                width="100%",
+                height=600)
+  })
+
+
   observeEvent(input$create_story, {
 
     if (story_prompt() != ""){
@@ -86,7 +102,17 @@ app_server <- function(input, output, session) {
       # shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
       showNotification("Hold on! Please specify > 2 sentences.", type = "info")
     } else {
-      quarto::quarto_render(input = app_sys("app/www/example.qmd"),
+      # Create a temp directory
+      temp_dir <- tempdir()
+
+      # Copy example.qmd from www folder to temp directory
+      file.copy(app_sys("app/www/example.qmd"), file.path(temp_dir, "example.qmd"), overwrite = TRUE)
+
+      # Path to the copied qmd file in the temp directory
+      temp_qmd <- file.path(temp_dir, "example.qmd")
+      temp_html <- file.path(temp_dir, "example.html")
+
+      quarto::quarto_render(input = temp_qmd,
                             output_format = "all",
                             metadata = list(theme = input$story_theme,
                                             "title-slide-attributes" = list(
@@ -103,37 +129,60 @@ app_server <- function(input, output, session) {
                             ),
                             quiet = FALSE
       )
+
+
+      # Define a target path in the www directory to copy the HTML
+      www_dir <- app_sys("app/www")
+      target_html <- file.path(www_dir, "generated_example.html")
+
+      # Move the generated HTML to the www folder so it can be served by Shiny
+      file.copy(temp_html, target_html, overwrite = TRUE)
+
+
+      # Dynamically serve the updated HTML file from the temp folder
+      output$html_story <- renderUI({
+        # Check if the file exists before serving
+        if (file.exists(target_html)) {
+          tags$iframe(
+            src = "www/generated_example.html",
+            width = "100%",
+            height = 600
+          )
+        } else {
+          tags$p("Waiting for the story...")
+        }
+      })
     }
 
   }, ignoreInit = TRUE)
 
-  html_content <- reactiveFileReader(
-    intervalMillis = 5000,  # Check for changes every 5 seconds
-    session = session,
-    filePath = app_sys("app/www/example.html"),
-    readFunc = rvest::read_html
-  )
+  # html_content <- reactiveFileReader(
+  #   intervalMillis = 5000,  # Check for changes every 5 seconds
+  #   session = session,
+  #   filePath = app_sys("app/www/example.html"),
+  #   readFunc = rvest::read_html
+  # )
 
-  output$html_story <- renderUI({
-
-    html_content()
-
-    file_path <- "www/example.html"
-
-    # Add a cache-busting query parameter with the current timestamp
-    # cache_buster <- Sys.time()
-
-    # Check if file exists before rendering the iframe
-    if (!file.exists(app_sys(paste0("app/", file_path)))) {
-      return(tags$p("Waiting for the story..."))
-    }
-
-    # tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
-    #             width="100%",
-    #             height=600)
-
-    tags$iframe(src= file_path,
-                width="100%",
-                height=600)
-  })
+  # output$html_story <- renderUI({
+  #
+  #   # html_content()
+  #
+  #   file_path <- "www/example.html"
+  #
+  #   # Add a cache-busting query parameter with the current timestamp
+  #   # cache_buster <- Sys.time()
+  #
+  #   # Check if file exists before rendering the iframe
+  #   if (!file.exists(app_sys(paste0("app/", file_path)))) {
+  #     return(tags$p("Waiting for the story..."))
+  #   }
+  #
+  #   # tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
+  #   #             width="100%",
+  #   #             height=600)
+  #
+  #   tags$iframe(src= file_path,
+  #               width="100%",
+  #               height=600)
+  # })
 }

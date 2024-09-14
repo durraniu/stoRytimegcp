@@ -11,11 +11,9 @@ Imports:
     bslib,
     config,
     golem,
-    htmltools,
     httr2,
     lexicon,
     quarto,
-    rvest,
     shiny,
     stringr,
     utils
