@@ -37,7 +37,8 @@ app_ui <- function(request) {
             width = "100%",
             height = "200px"
           ),
-          bslib::input_task_button("create_story", "Create Story")
+          # bslib::input_task_button("create_story", "Create Story")
+          actionButton("create_story", "Create Story")
         ),
 
         card(
@@ -57,7 +58,8 @@ app_ui <- function(request) {
                 label = "Provide a story title:",
                 value = "stoRy time with shiny and quarto"
               ),
-              bslib::input_task_button("update_theme", "Update Theme"),
+              # bslib::input_task_button("update_theme", "Update Theme"),
+              actionButton("update_theme", "Update Theme"),
               title = "Presentation settings"
             ),
             class = "d-flex align-items-center gap-1"
@@ -92,6 +94,7 @@ golem_add_external_resources <- function() {
     ),
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()
-    shinyalert::useShinyalert(force = TRUE)
+    shinyalert::useShinyalert(force = TRUE),
+    useBusyIndicators(),
   )
 }
