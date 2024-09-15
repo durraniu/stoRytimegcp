@@ -50,7 +50,7 @@ for (i in (n_parts+1)) {
   cat(params$story[[i]], "\n")
 
   img_html <- paste0("<img src='data:image/jpeg;base64,", params$imgs[[i]], "' width='100%' />")
-  cat(img_html, "{.fragment width='450' height='300'}", "\n")
+  cat(img_html, "\n")
 }
 ```
 

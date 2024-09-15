@@ -15,27 +15,15 @@ output: github_document
 
 # `{stoRytimegcp}`
 
+{stoRytimegcp} is a shiny app that creates and illustrates stories with user inputs and AI models. 
+
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-## Installation
-
-You can install the development version of `{stoRytimegcp}` like so:
-
-```{r}
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
-
-## Run
-
-You can launch the application by running:
-
-```{r, eval = FALSE}
-stoRytimegcp::run_app()
-```
-
 ## About
+
+You'd need an account ID and generate an API key on Cloudflare Workers AI to use their models API. The API is free to use for models in beta. After you obtain the ID and API key, clone this repo and add create a `.Renviron` file in the root of the cloned repo. Add the ID and key to the environment file. Now you are ready to run this app with `golem::run_dev()`or `storytimegcp::run_app()`
 
 You are reading the doc about version : `r golem::pkg_version()`
 
