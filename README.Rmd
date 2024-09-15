@@ -38,11 +38,3 @@ Here are the tests results and package coverage:
 ```{r, error = TRUE}
 devtools::check(quiet = TRUE)
 ```
-
-```{r echo = FALSE}
-unloadNamespace("stoRytimegcp")
-```
-
-```{r, error = TRUE}
-covr::package_coverage()
-```
