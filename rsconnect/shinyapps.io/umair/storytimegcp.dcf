@@ -5,7 +5,7 @@ account: umair
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12713906
-bundleId: 9102522
+bundleId: 9102594
 url: https://umair.shinyapps.io/storytimegcp/
 version: 1
 asMultiple: FALSE

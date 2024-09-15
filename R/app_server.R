@@ -10,13 +10,13 @@ app_server <- function(input, output, session) {
   all_imgs <- reactiveVal()
 
   # Check story prompt
-  story_prompt <- reactive({
-    input$story_prompt
-  })
+  # story_prompt <- reactive({
+  #   input$story_prompt
+  # })
 
-  num_of_sentences <- reactive({
-    input$num_of_sentences
-  })
+  # num_of_sentences <- reactive({
+  #   input$num_of_sentences
+  # })
 
 
 
@@ -35,64 +35,82 @@ app_server <- function(input, output, session) {
   })
 
 
+
+
+
+
   observeEvent(input$create_story, {
+    req(input$story_prompt, input$num_of_sentences)
 
+    withProgress(message = "Creating story and images ...", value = 0, {
 
-    if (story_prompt() != ""){
+      if (input$story_prompt != ""){
 
-      # Get story from Workers AI model
-      new_story <- get_story(
-        prompt = story_prompt(),
-        num_of_sentences = num_of_sentences()
-      )
+        # Show progress increment
+        incProgress(0.3, detail = "Generating story...")
 
-      # Process the story
-      if (is.null(new_story)){
-        new_story <- NULL
-      } else {
-          check_profanity <- sapply(new_story, test_profanity)
-          if (all(check_profanity == FALSE)){
-            new_story <- new_story
-          } else {
-            new_story <- NULL
-          }
-      }
-
-      story(new_story)
-
-      # Instructions for drawing each scene
-      image_prompt <- paste0(
-        "The background information for this scene is: ",
-        story_prompt(),
-        ".
-        ",
-        input$drawing_instructions
-      )
-
-      # Get images from Workers AI model
-      if (is.null(story())){
-        all_imgs(NULL)
-      } else {
-        reqs <- lapply(
-          story(),
-          function(x){
-            req_single_image(x, image_prompt)
-          }
+        # Get story from Workers AI model
+        new_story <- get_story(
+          prompt = input$story_prompt,
+          num_of_sentences = input$num_of_sentences
         )
-        resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
 
-        # All images
-        new_all_imgs <- lapply(resps, get_image)
-        all_imgs(new_all_imgs)
+        # Process the story
+        if (is.null(new_story)){
+          new_story <- NULL
+        } else {
+            check_profanity <- sapply(new_story, test_profanity)
+            if (all(check_profanity == FALSE)){
+              new_story <- new_story
+            } else {
+              new_story <- NULL
+            }
+        }
+
+        story(new_story)
+
+        # Instructions for drawing each scene
+        image_prompt <- paste0(
+          "The background information for this scene is: ",
+          input$story_prompt,
+          ".
+          ",
+          input$drawing_instructions
+        )
+
+        # Increment progress for image generation
+        incProgress(0.5, detail = "Generating images...")
+
+        # Get images from Workers AI model
+        if (is.null(story())){
+          all_imgs(NULL)
+        } else {
+          reqs <- lapply(
+            story(),
+            function(x){
+              req_single_image(x, image_prompt)
+            }
+          )
+          resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
+
+          # All images
+          new_all_imgs <- lapply(resps, get_image)
+          all_imgs(new_all_imgs)
+        }
       }
-    }
+      incProgress(1, detail = "Story and images created!")
+    })
 
   }, ignoreInit = TRUE)
 
 
 
+
+
+
+
+
   observeEvent(input$create_story | input$update_theme, {
-    req(story(), all_imgs())
 
     previously_generated_file <- app_sys(paste0("app/", "www/generated_example.html"))
 
@@ -100,7 +118,7 @@ app_server <- function(input, output, session) {
       file.remove(previously_generated_file)
     }
 
-
+    withProgress(message = "Building the slide deck ...", value = 0, {
 
     if (is.null(story()) | is.null(all_imgs())){
       # shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
@@ -140,6 +158,8 @@ app_server <- function(input, output, session) {
                             quiet = FALSE
       )
 
+      incProgress(0.8, detail = "Slide deck generated!")
+
 
       # Define a target path in the www directory to copy the HTML
       www_dir <- app_sys("app/www")
@@ -163,8 +183,10 @@ app_server <- function(input, output, session) {
           tags$p("Waiting for the story...")
         }
       })
-    }
 
+      incProgress(1, detail = "Read your story!")
+    }
+})
   }, ignoreInit = TRUE)
 
   # html_content <- reactiveFileReader(
