@@ -14,15 +14,6 @@ app_server <- function(input, output, session) {
   story <- reactiveVal()
   all_imgs <- reactiveVal()
 
-  # Check story prompt
-  # story_prompt <- reactive({
-  #   input$story_prompt
-  # })
-
-  # num_of_sentences <- reactive({
-  #   input$num_of_sentences
-  # })
-
 
 
   output$html_story <- renderUI({
@@ -194,33 +185,23 @@ app_server <- function(input, output, session) {
 })
   }, ignoreInit = TRUE)
 
-  # html_content <- reactiveFileReader(
-  #   intervalMillis = 5000,  # Check for changes every 5 seconds
-  #   session = session,
-  #   filePath = app_sys("app/www/example.html"),
-  #   readFunc = rvest::read_html
-  # )
 
-  # output$html_story <- renderUI({
-  #
-  #   # html_content()
-  #
-  #   file_path <- "www/example.html"
-  #
-  #   # Add a cache-busting query parameter with the current timestamp
-  #   # cache_buster <- Sys.time()
-  #
-  #   # Check if file exists before rendering the iframe
-  #   if (!file.exists(app_sys(paste0("app/", file_path)))) {
-  #     return(tags$p("Waiting for the story..."))
-  #   }
-  #
-  #   # tags$iframe(src= paste0(file_path, "?t=", as.numeric(cache_buster)),
-  #   #             width="100%",
-  #   #             height=600)
-  #
-  #   tags$iframe(src= file_path,
-  #               width="100%",
-  #               height=600)
-  # })
+
+
+  output$download_html <- downloadHandler(
+    filename = function() {
+      "generated_story.html"
+    },
+    content = function(file) {
+      target_html <- app_sys("app/www/generated_example.html")
+
+      # Ensure the file exists before allowing the download
+      if (file.exists(target_html)) {
+        # Copy the generated HTML file to the specified download location
+        file.copy(target_html, file)
+      } else {
+        showNotification("No story available for download yet.", type = "error")
+      }
+    }
+  )
 }

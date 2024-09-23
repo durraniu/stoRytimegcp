@@ -67,7 +67,9 @@ app_ui <- function(request) {
             ),
             class = "d-flex align-items-center gap-1"
           ),
-          htmlOutput("html_story"), min_height = 600
+          htmlOutput("html_story"),
+          downloadButton("download_html", "Download Story"),
+          min_height = 600
         )
 
       )
