@@ -13,9 +13,10 @@ Imports:
     golem,
     httr2,
     lexicon,
-    pkgload,
     quarto,
+    RPostgres,
     shiny,
+    shiny.telemetry,
     stringr,
     utils
 Encoding: UTF-8

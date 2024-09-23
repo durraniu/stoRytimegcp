@@ -43,8 +43,8 @@ app_ui <- function(request) {
             label = "Provide a story title:",
             value = "stoRy time with shiny and quarto"
           ),
-          # bslib::input_task_button("create_story", "Create Story")
-          actionButton("create_story", "Create Story")
+          bslib::input_task_button("create_story", "Create Story")
+          # actionButton("create_story", "Create Story")
         ),
 
         card(
@@ -61,8 +61,8 @@ app_ui <- function(request) {
                 choices = c("dark", "beige", "blood", "league", "moon", "night",
                             "serif", "simple", "sky", "solarized", "default")
               ),
-              # bslib::input_task_button("update_theme", "Update Theme"),
-              actionButton("update_theme", "Update Theme"),
+              bslib::input_task_button("update_theme", "Update Theme"),
+              # actionButton("update_theme", "Update Theme"),
               title = "Presentation settings"
             ),
             class = "d-flex align-items-center gap-1"
@@ -101,6 +101,7 @@ golem_add_external_resources <- function() {
     useBusyIndicators(),
     # waiter::useWaiter(), # include dependencies
     # htmltools::findDependencies(selectInput("test", "test", NULL)),
+    shiny.telemetry::use_telemetry(),
     tags$script(HTML('
       $(document).on("click", "#create_story", function() {
         $("html, body").animate({
