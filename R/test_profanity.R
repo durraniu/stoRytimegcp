@@ -18,8 +18,7 @@ test_profanity <- function(x){
   bad_words_escaped <- stringr::str_replace_all(bad_words, "([.\\+*?\\[\\^\\]$(){}=!<>|:-])", "\\\\\\1")
 
   # Check if any bad words are found in the input string
-  vapply(bad_words_escaped, function(y) {
-    !stringr::str_detect(x, y)
-  }, FUN.VALUE = TRUE) |>
-    all()
+  any(vapply(bad_words_escaped, function(y) {
+    stringr::str_detect(x, y)
+  }, FUN.VALUE = logical(1)))
 }
