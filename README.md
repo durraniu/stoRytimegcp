@@ -21,3 +21,7 @@ API key, clone this repo and add create a `.Renviron` file in the root
 of the cloned repo. Add the ID and key to the environment file. Now you
 are ready to run this app with `golem::run_dev()`or
 `storytimegcp::run_app()`.
+
+## Links
+Google Cloud Run: https://storytime-209667139353.us-central1.run.app/  
+Shiny Apps: https://umair.shinyapps.io/storytimegcp/
