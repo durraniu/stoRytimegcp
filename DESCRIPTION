@@ -14,9 +14,7 @@ Imports:
     httr2,
     lexicon,
     quarto,
-    RPostgres,
     shiny,
-    shiny.telemetry,
     stringr,
     utils
 Encoding: UTF-8

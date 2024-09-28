@@ -15,3 +15,5 @@ $run_dev.*
 ^app\.R$
 ^rsconnect$
 ^\.rscignore$
+^deploy$
+^\.dockerignore$

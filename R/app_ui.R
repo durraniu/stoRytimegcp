@@ -103,7 +103,7 @@ golem_add_external_resources <- function() {
     useBusyIndicators(),
     # waiter::useWaiter(), # include dependencies
     # htmltools::findDependencies(selectInput("test", "test", NULL)),
-    shiny.telemetry::use_telemetry(),
+    # shiny.telemetry::use_telemetry(),
     tags$script(HTML('
       $(document).on("click", "#create_story", function() {
         $("html, body").animate({

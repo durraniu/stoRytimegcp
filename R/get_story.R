@@ -20,6 +20,7 @@ get_story <- function(prompt,
   }
 
   if (test_profanity(prompt)){
+    # print(test_profanity(prompt))
     return(NULL)
   }
 
