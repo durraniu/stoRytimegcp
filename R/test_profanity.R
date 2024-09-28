@@ -6,7 +6,8 @@
 #' @return A logical value indicating whether the input string contains no profane words.
 #' @import lexicon
 #' @import stringr
-test_profanity <- function(x){
+test_profanity <- function(x) {
+  # Get unique bad words and convert to lowercase
   bad_words <- unique(tolower(c(
     lexicon::profanity_alvarez,
     lexicon::profanity_arr_bad,
@@ -14,11 +15,14 @@ test_profanity <- function(x){
     lexicon::profanity_zac_anger,
     lexicon::profanity_racist
   )))
+
   # Escape any special characters in the bad words list
   bad_words_escaped <- stringr::str_replace_all(bad_words, "([.\\+*?\\[\\^\\]$(){}=!<>|:-])", "\\\\\\1")
 
+  # Create regex patterns for whole word matching
+  patterns <- paste0("\\b(", paste(bad_words_escaped, collapse = "|"), ")\\b")
+
   # Check if any bad words are found in the input string
-  any(vapply(bad_words_escaped, function(y) {
-    stringr::str_detect(x, y)
-  }, FUN.VALUE = logical(1)))
+  any(stringr::str_detect(tolower(x), patterns))
 }
+

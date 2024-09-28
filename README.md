@@ -14,33 +14,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## About
 
-You’d need an account ID and generate an API key on Cloudflare Workers
-AI to use their models API. The API is free to use for models in beta.
-After you obtain the ID and API key, clone this repo and add create a
-`.Renviron` file in the root of the cloned repo. Add the ID and key to
-the environment file. Now you are ready to run this app with
-`golem::run_dev()`or `storytimegcp::run_app()`
-
-You are reading the doc about version : 0.0.0.9000
-
-This README has been compiled on the
-
-``` r
-Sys.time()
-#> [1] "2024-09-15 11:47:59 EDT"
-```
-
-Here are the tests results and package coverage:
-
-``` r
-devtools::check(quiet = TRUE)
-#> ℹ Loading storytimegcp
-#> ── R CMD check results ──────────────────────────── storytimegcp 0.0.0.9000 ────
-#> Duration: 37.4s
-#> 
-#> ❯ checking dependencies in R code ... NOTE
-#>   Namespace in Imports field not imported from: 'pkgload'
-#>     All declared Imports should be used.
-#> 
-#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
-```
+If you want to run this app on your own, you’d need an account ID and
+generate an API key on Cloudflare Workers AI to use their models API.
+The API is free to use for models in beta. After you obtain the ID and
+API key, clone this repo and add create a `.Renviron` file in the root
+of the cloned repo. Add the ID and key to the environment file. Now you
+are ready to run this app with `golem::run_dev()`or
+`storytimegcp::run_app()`.

@@ -6,9 +6,9 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  telemetry$start_session(
-    track_values = TRUE
-  )
+  # telemetry$start_session(
+  #   track_values = TRUE
+  # )
 
   # Your application server logic
   story <- reactiveVal()
