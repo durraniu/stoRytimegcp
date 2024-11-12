@@ -6,10 +6,6 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  # telemetry$start_session(
-  #   track_values = TRUE
-  # )
-
   # Your application server logic
   story <- reactiveVal()
   all_imgs <- reactiveVal()
@@ -55,12 +51,12 @@ app_server <- function(input, output, session) {
         if (is.null(new_story)){
           new_story <- NULL
         } else {
-            check_profanity <- sapply(new_story, test_profanity)
-            if (all(check_profanity == FALSE)){
-              new_story <- new_story
-            } else {
-              new_story <- NULL
-            }
+          check_profanity <- sapply(new_story, test_profanity)
+          if (all(check_profanity == FALSE)){
+            new_story <- new_story
+          } else {
+            new_story <- NULL
+          }
         }
 
         story(new_story)
@@ -100,109 +96,110 @@ app_server <- function(input, output, session) {
   }, ignoreInit = TRUE)
 
 
+  # Create a temporary directory specific to this session
+  session_temp_dir <- tempfile(pattern = "quarto_output_")
+  dir.create(session_temp_dir)
 
+  # Clean up the temporary directory when the session ends
+  onStop(function() {
+    unlink(session_temp_dir, recursive = TRUE)
+  })
 
-
-
-
-
-  observeEvent(input$create_story | input$update_theme, {
-
-    previously_generated_file <- app_sys(paste0("app/", "www/generated_example.html"))
-
-    if (file.exists(previously_generated_file)) {
-      file.remove(previously_generated_file)
+  # Function to serve files from the temporary directory
+  serve_temp_file <- function(filename) {
+    file_path <- file.path(session_temp_dir, filename)
+    if (!file.exists(file_path)) {
+      return(NULL)
     }
+
+    # Create a random identifier for cache busting
+    cache_buster <- paste0("v=", as.numeric(Sys.time()))
+
+    # Serve the file with proper mime type
+    shiny::addResourcePath(
+      prefix = paste0("temp_", session$token),
+      directoryPath = session_temp_dir
+    )
+
+    # Return the URL with cache buster
+    paste0("/temp_", session$token, "/", filename, "?", cache_buster)
+  }
+
+  # Handler for story creation
+  observeEvent(input$create_story | input$update_theme, {
+    req(input$story_prompt, input$num_of_sentences)
 
     withProgress(message = "Building the slide deck ...", value = 0, {
+      # Your existing story generation code here...
 
-      # browser()
+      # Copy the template QMD to temp directory
+      template_qmd <- app_sys("app/www/example.qmd")
+      file.copy(template_qmd, file.path(session_temp_dir, "example.qmd"), overwrite = TRUE)
 
-    if (is.null(story()) | is.null(all_imgs())){
-      # shinyalert::shinyalert("Oops!", "Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
-      showNotification("Something went wrong! Make sure you are not leaving the first sentence of the story blank and the # of sentences are more than 2. Try again!", type = "error")
-    } else if (!(length(story()) == length(all_imgs()))){
-      # shinyalert::shinyalert("Oops!", "Something went wrong. Try again!", type = "error")
-      showNotification("Oops! Something went wrong. Try again!", type = "error")
-    } else if (length(story()) < 3){
-      # shinyalert::shinyalert("Hold on!", "Please specify > 2 sentences.", type = "info")
-      showNotification("Hold on! Either you specified or the API produced less than 3 sentences. Either specify > 2 sentences or try again.", type = "warning")
-    } else {
-      # Create a temp directory
-      temp_dir <- tempdir()
+      # Save current working directory
+      original_wd <- getwd()
 
-      # Copy example.qmd from www folder to temp directory
-      file.copy(app_sys("app/www/example.qmd"), file.path(temp_dir, "example.qmd"), overwrite = TRUE)
+      # Change to temp directory for rendering
+      setwd(session_temp_dir)
 
-      # Path to the copied qmd file in the temp directory
-      temp_qmd <- file.path(temp_dir, "example.qmd")
-      temp_html <- file.path(temp_dir, "example.html")
-
-      quarto::quarto_render(input = temp_qmd,
-                            output_format = "all",
-                            metadata = list(theme = input$story_theme,
-                                            "title-slide-attributes" = list(
-                                              "data-background-image" = paste0("data:image/png;base64,", base64enc::base64encode(utils::tail(all_imgs(), 1)[[1]])),
-                                              "data-background-size" = "cover",
-                                              "data-background-opacity" = 0.3
-                                            )),
-                            quarto_args = c("--metadata",
-                                            paste0("title=", input$story_title)),
-                            execute_params = list(
-                              story_prompt = input$story_prompt,
-                              story = story(),
-                              imgs = lapply(all_imgs(), base64enc::base64encode)
-                            ),
-                            quiet = FALSE
-      )
-
-      incProgress(0.8, detail = "Slide deck generated!")
-
-
-      # Define a target path in the www directory to copy the HTML
-      www_dir <- app_sys("app/www")
-      target_html <- file.path(www_dir, "generated_example.html")
-
-      # Move the generated HTML to the www folder so it can be served by Shiny
-      file.copy(temp_html, target_html, overwrite = TRUE)
-
-
-      # Dynamically serve the updated HTML file from the temp folder
-      output$html_story <- renderUI({
-        # req(story(), all_imgs())
-        # Check if the file exists before serving
-        if (file.exists(target_html)) {
-          tags$iframe(
-            src = "www/generated_example.html",
-            width = "100%",
-            height = 600
-          )
-        } else {
-          tags$p("Waiting for the story...")
-        }
+      # Use tryCatch to ensure we always restore the working directory
+      tryCatch({
+        # Render in the temporary directory
+        quarto::quarto_render(
+          input = "example.qmd",  # Just the filename since we're in the right directory
+          output_format = "all",
+          metadata = list(
+            theme = input$story_theme,
+            "title-slide-attributes" = list(
+              "data-background-image" = paste0("data:image/png;base64,",
+                                               base64enc::base64encode(utils::tail(all_imgs(), 1)[[1]])),
+              "data-background-size" = "cover",
+              "data-background-opacity" = 0.3
+            )
+          ),
+          quarto_args = c("--metadata", paste0("title=", input$story_title)),
+          execute_params = list(
+            story_prompt = input$story_prompt,
+            story = story(),
+            imgs = lapply(all_imgs(), base64enc::base64encode)
+          ),
+          quiet = FALSE
+        )
+      },
+      finally = {
+        # Restore original working directory
+        setwd(original_wd)
       })
 
-      incProgress(1, detail = "Read your story!")
-    }
-})
-  }, ignoreInit = TRUE)
+      # Update the UI with the new content
+      output$html_story <- renderUI({
+        # Check if the rendered file exists
+        output_file <- file.path(session_temp_dir, "example.html")
+        req(file.exists(output_file))
 
+        # Get URL for the temp file with cache busting
+        file_url <- serve_temp_file("example.html")
 
+        tags$iframe(
+          src = file_url,
+          width = "100%",
+          height = 600
+        )
+      })
+    })
+  })
 
-
+  # Modified download handler
   output$download_html <- downloadHandler(
     filename = function() {
       "generated_story.html"
     },
     content = function(file) {
-      target_html <- app_sys("app/www/generated_example.html")
-
-      # Ensure the file exists before allowing the download
-      if (file.exists(target_html)) {
-        # Copy the generated HTML file to the specified download location
-        file.copy(target_html, file)
+      story_file <- file.path(session_temp_dir, "story.html")
+      if (file.exists(story_file)) {
+        file.copy(story_file, file)
       } else {
-        showNotification("No story available for download yet.", type = "error")
+        stop("No story has been generated yet")
       }
     }
   )
