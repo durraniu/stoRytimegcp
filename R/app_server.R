@@ -9,6 +9,20 @@ app_server <- function(input, output, session) {
   story <- reactiveVal()
   all_imgs <- reactiveVal()
 
+  output$html_story <- renderUI({
+
+    file_path <- "www/example.html"
+
+    # Check if file exists before rendering the iframe
+    if (!file.exists(app_sys(paste0("app/", file_path)))) {
+      return(tags$p("Waiting for the story..."))
+    }
+
+    tags$iframe(src= file_path,
+                width="100%",
+                height=600)
+  })
+
   # Create a temporary directory specific to this session
   session_temp_dir <- tempfile(pattern = paste0("quarto_output_", session$token, "_"))
   dir.create(session_temp_dir)
@@ -51,6 +65,8 @@ app_server <- function(input, output, session) {
     story(NULL)
     all_imgs(NULL)
 
+    print("story nullified")
+
     withProgress(message = "Creating story and images ...", value = 0, {
       if (input$story_prompt != "") {
         # Show progress increment
@@ -62,18 +78,22 @@ app_server <- function(input, output, session) {
           num_of_sentences = input$num_of_sentences
         )
 
+        print(new_story)
+
         # Process the story
         if (is.null(new_story)) {
           story(NULL)
           return()
         } else {
-          check_profanity <- sapply(new_story, test_profanity)
-          if (all(check_profanity == FALSE)) {
+          # check_profanity <- sapply(new_story, test_profanity)
+          # print(check_profanity)
+          # if (all(check_profanity == FALSE)) {
+            print("Story made")
             story(new_story)
-          } else {
-            story(NULL)
-            return()
-          }
+          # } else {
+          #   story(NULL)
+          #   return()
+          # }
         }
 
         # Instructions for drawing each scene
@@ -125,8 +145,11 @@ app_server <- function(input, output, session) {
 
         # browser()
 
+        print(story())
+        print(length(all_imgs()))
+
         # Use tryCatch to ensure we always restore the working directory
-        tryCatch({
+        # tryCatch({
           # Render in the temporary directory
           quarto::quarto_render(
             input = "example.qmd",  # Just the filename since we're in the right directory
@@ -146,13 +169,13 @@ app_server <- function(input, output, session) {
               story = story(),
               imgs = lapply(all_imgs(), base64enc::base64encode)
             ),
-            quiet = FALSE
+            quiet = TRUE
           )
-        },
-        finally = {
-          # Restore original working directory
+        # },
+        # finally = {
+        #   # Restore original working directory
           setwd(original_wd)
-        })
+        # })
 
         incProgress(1, detail = "Finalizing...")
       }
@@ -175,8 +198,10 @@ app_server <- function(input, output, session) {
       # Change to temp directory for rendering
       setwd(session_temp_dir)
 
+      # browser()
+
       # Use tryCatch to ensure we always restore the working directory
-      tryCatch({
+      # tryCatch({
         quarto::quarto_render(
           input = "example.qmd",
           output_format = "all",
@@ -195,12 +220,12 @@ app_server <- function(input, output, session) {
             story = story(),
             imgs = lapply(all_imgs(), base64enc::base64encode)
           ),
-          quiet = FALSE
+          quiet = TRUE
         )
-      },
-      finally = {
+      # },
+      # finally = {
         setwd(original_wd)
-      })
+      # })
 
       incProgress(1, detail = "Theme updated!")
     })
@@ -208,6 +233,7 @@ app_server <- function(input, output, session) {
 
   # Update UI whenever the file changes
   observe({
+    input$update_theme
     req(story(), all_imgs())
 
     output$html_story <- renderUI({
