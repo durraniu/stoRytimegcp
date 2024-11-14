@@ -5,7 +5,13 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  # Your application server logic
+
+  # Get a token
+  token <- gargle::credentials_service_account(
+    path = Sys.getenv("GL_AUTH"),
+    scopes = "https://www.googleapis.com/auth/cloud-platform"
+  )
+
   story <- reactiveVal()
   all_imgs <- reactiveVal()
 

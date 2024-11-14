@@ -17,3 +17,4 @@ $run_dev.*
 ^\.rscignore$
 ^deploy$
 ^\.dockerignore$
+^storytime-435520-b3f242f71e91.json

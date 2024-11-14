@@ -10,6 +10,7 @@ Imports:
     bsicons,
     bslib,
     config,
+    gargle,
     golem,
     httr2,
     lexicon,
