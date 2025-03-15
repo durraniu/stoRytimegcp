@@ -14,6 +14,7 @@ req_single_image <- function(prompt,
                              base_url = cf_base_url()){
 
   url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/bytedance/stable-diffusion-xl-lightning")
+  # url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/lykon/dreamshaper-8-lcm")
 
   # Create the request
   httr2::request(url_img) |>
