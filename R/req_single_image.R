@@ -8,13 +8,14 @@
 #'
 #' @return Request.
 req_single_image <- function(prompt,
-                             instructions,
+                             negative_prompt,
+                             # instructions,
                              ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
                              API_KEY = Sys.getenv("API_KEY"),
                              base_url = cf_base_url()){
 
-  url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/bytedance/stable-diffusion-xl-lightning")
-  # url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/lykon/dreamshaper-8-lcm")
+  # url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/bytedance/stable-diffusion-xl-lightning")
+  url_img <- paste0("https://api.cloudflare.com/client/v4/accounts/", ACCOUNT_ID, "/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0")
 
   # Create the request
   httr2::request(url_img) |>
@@ -22,9 +23,12 @@ req_single_image <- function(prompt,
       "Authorization" = paste("Bearer", API_KEY)
     ) |>
     httr2::req_body_json(list(prompt = paste0(
-      prompt, " ",
-      instructions
-    ))) |>
+      prompt#,
+      # " ",
+      # instructions
+    ),
+    negative_prompt = negative_prompt,
+    guidance = 15)) |>
     httr2::req_method("POST")
 }
 

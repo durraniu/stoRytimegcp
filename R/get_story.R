@@ -23,8 +23,9 @@ get_story <- function(prompt,
     return(NULL)
   }
 
-  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct")
+  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
   url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
+
 
   # message("Sending request to get story with", API_KEY, " and ", ACCOUNT_ID)
 
@@ -39,8 +40,8 @@ get_story <- function(prompt,
         list(role = "system",
              content = paste0("You tell short stories.
              Each sentence must describe all details.
-             Each story must have ",  num_of_sentences,  " sentences.
-             The story must have a beginning, a climax and an end.")),
+             A story must have ",  num_of_sentences,  " sentences.
+             The story must have a beginning, a climax and an end. If appropriate, start the story with 'Once upon a time'. ")),
         list(
           role = "user",
           content = prompt
@@ -58,7 +59,7 @@ get_story <- function(prompt,
   if (isTRUE(response_text$success)){
     full_text <- response_text$result$response #paste(prompt, response_text$result$response)
     cleaned_text <- gsub("\n", "", full_text)
-    split_text <- unlist(strsplit(cleaned_text, "(?<=[.])\\s*(?=[A-Z])", perl = TRUE))
+    split_text <- unlist(strsplit(cleaned_text, "(?<!\\b(?:Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|etc|U\\.S))(?<=\\.)\\s+(?=[A-Z])", perl = TRUE))
   } else {
     split_text <- NULL
   }

@@ -1,0 +1,81 @@
+.hero-section {
+  background-color: #E6E6FA;
+  padding: 40px 20px;
+  text-align: left;
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-content {
+  max-width: 500px;
+  z-index: 2;
+}
+
+.hero-image {
+  max-width: 300px;
+  margin-top: 20px;
+}
+
+
+.hero-title {
+  color: #483D8B;
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero-text {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.create-story-section {
+  padding: 40px 20px;
+}
+
+.section-title {
+  color: #483D8B;
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.story-input {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.character-cards {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.character-card {
+  width: 150px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.character-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-primary {
+  background-color: #483D8B;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 25px;
+}
+
+.btn-primary:hover {
+  background-color: #372B6B;
+}
