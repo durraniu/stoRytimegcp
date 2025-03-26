@@ -20,6 +20,10 @@ generate_prompts <- function(response_prompts, style) {
       prompt = "comic {prompt} . graphic illustration, comic art, graphic novel art, vibrant, highly detailed",
       negative_prompt = "photograph, deformed, glitch, noisy, realistic, stock photo"
     ),
+    lego_movie = list(
+      prompt = "lego movie {prompt} . graphic illustration, lego art, vibrant, highly detailed",
+      negative_prompt = "photograph, deformed, glitch, noisy, realistic, stock photo"
+    ),
     play_doh = list(
       prompt = "play-doh style {prompt} . sculpture, clay art, centered composition, Claymation",
       negative_prompt = "sloppy, messy, grainy, highly detailed, ultra textured, photo"
