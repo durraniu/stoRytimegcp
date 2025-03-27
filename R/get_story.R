@@ -23,9 +23,8 @@ get_story <- function(prompt,
     return(NULL)
   }
 
-  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
-  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
-
+  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
+  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
 
   # message("Sending request to get story with", API_KEY, " and ", ACCOUNT_ID)
 
@@ -38,10 +37,13 @@ get_story <- function(prompt,
       max_tokens = max_tokens,
       messages = list(
         list(role = "system",
-             content = paste0("You tell short stories.
+             content = paste0("You tell short stories for children.
              Each sentence must describe all details.
-             A story must have ",  num_of_sentences,  " sentences.
-             The story must have a beginning, a climax and an end. If appropriate, start the story with 'Once upon a time'. ")),
+             A story must have ",  num_of_sentences,  " sentences.",
+             "The story must have a beginning, a climax and an end. ",
+             # "The story must follow the three-act structure model, i.e., it must have the Setup, the Confrontation, and the Resolution.",
+             "If appropriate, start the story with 'Once upon a time'. "
+            )),
         list(
           role = "user",
           content = prompt

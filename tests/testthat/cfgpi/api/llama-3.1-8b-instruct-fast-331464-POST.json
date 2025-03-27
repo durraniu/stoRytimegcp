@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Once upon a time, in a faraway kingdom, Snow White opened the door to a beautiful and historic castle, its tall spires and towers reaching high into the bright blue sky. She had been invited to the castle by the King and Queen for a grand ball, and she was excited to wear her favorite yellow ball gown and dance with the handsome Prince Charming. As she stepped inside, she was greeted by the smiling faces of the King and Queen, who welcomed her with open arms and led her to the grand ballroom filled with sparkling chandeliers and lively music. But as the night wore on, the Evil Queen, disguised as an old hag, appeared and tried to poison Snow White's glass of water, but the Prince Charming caught her in the act and chased her away. In the end, Snow White lived happily ever after with the Prince Charming, and the Evil Queen was banished from the kingdom forever.",
+        "usage": {
+            "prompt_tokens": 71,
+            "completion_tokens": 190,
+            "total_tokens": 261
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}

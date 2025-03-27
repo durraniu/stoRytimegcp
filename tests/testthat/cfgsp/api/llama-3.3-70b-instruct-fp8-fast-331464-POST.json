@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Once upon a time, in a cozy little cottage nestled in a dense forest filled with tall trees, busy squirrels, and colorful birds, Snow White opened the door to a warm and inviting room with a fireplace crackling and spitting out golden sparks, where seven tiny dwarfs, each with their own unique personality and skill, were busy preparing a delicious meal of roasted chicken, steaming vegetables, and freshly baked bread. As she entered, the room was filled with the sweet aroma of baking cookies and the sound of happy chatter, and Snow White's eyes sparkled with excitement as she took in the lively scene before her. But little did she know, a wicked queen, disguised as an old hag, was watching her from outside the window, her eyes gleaming with malice and her heart filled with a deep-seated jealousy, as she plotted her next move to destroy Snow White's happiness. The queen's plan was to offer Snow White a poisoned apple, shiny and red, which would put Snow White into a deep sleep, and the dwarfs, unaware of the danger, would be powerless to save her. In the end, however, the dwarfs discovered the queen's plan just in time, and they were able to save Snow White from the poisoned apple, and the wicked queen was banished from the land, allowing Snow White and the dwarfs to live happily ever after, surrounded by the beauty and wonder of the enchanted forest.",
+        "usage": {
+            "prompt_tokens": 72,
+            "completion_tokens": 293,
+            "total_tokens": 365
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}

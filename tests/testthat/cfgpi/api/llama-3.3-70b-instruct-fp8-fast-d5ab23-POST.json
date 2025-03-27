@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Snow White, a young woman with long, curly black hair, bright blue eyes, and a slender figure, wearing a bright yellow ball gown with a sparkling tiara on her head, standing in front of a beautiful and historic castle with tall spires and towers reaching high into the bright blue sky, with a large wooden door behind her, looking excited and happy with a big smile on her face, as she opens the door to enter the castle.\nSnow White, a young woman with long, curly black hair, bright blue eyes, and a slender figure, wearing a bright yellow ball gown with a sparkling tiara on her head, standing in a grand ballroom with sparkling chandeliers and lively music, surrounded by the King, a middle-aged man with a white beard and a red cape, and the Queen, a middle-aged woman with a kind face and a golden crown, who are smiling and welcoming her with open arms, and Prince Charming, a handsome young man with short, dark hair and a charming smile, looking at her with admiration.\nSnow White, a young woman with long, curly black hair, bright blue eyes, and a slender figure, wearing a bright yellow ball gown with a sparkling tiara on her head, standing in a grand ballroom with sparkling chandeliers and lively music, surrounded by the King, a middle-aged man with a white beard and a red cape, and the Queen, a middle-aged woman with a kind face and a golden crown, who are smiling and welcoming her with open arms, and Prince Charming, a handsome young man with short, dark hair and a charming smile, looking at her with admiration, as they all dance and enjoy the music together.\nSnow White, a young woman with long, curly black hair, bright blue eyes, and a slender figure, wearing a bright yellow ball gown with a sparkling tiara on her head, standing in a grand ballroom with sparkling chandeliers and lively music, as the Evil Queen, an old hag with a wrinkled face and a black cloak, tries to poison her glass of water, but Prince Charming, a handsome young man with short, dark hair and a charming smile, catches her in the act and chases her away, looking angry and protective, while Snow White looks shocked and scared.\nSnow White, a young woman with long, curly black hair, bright blue eyes, and a slender figure, wearing a bright yellow ball gown with a sparkling tiara on her head, and Prince Charming, a handsome young man with short, dark hair and a charming smile, standing together in a beautiful garden with flowers and trees, holding hands and looking happy and in love, with the castle in the background, as they live happily ever after, and the Evil Queen, an old hag with a wrinkled face and a black cloak, is seen being banished from the kingdom in the distance, looking angry and sad.",
+        "usage": {
+            "prompt_tokens": 423,
+            "completion_tokens": 593,
+            "total_tokens": 1016
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}

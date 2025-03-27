@@ -2,7 +2,7 @@
 #'
 #' @param response_prompts Vector of prompts for generating images
 #' @param style A character string specifying the desired style. Choices are:
-#'   "anime", "comics", "play_doh", "ethereal_fantasy", "isometric",
+#'   "anime", "comics", "lego_movie", "play_doh", "ethereal_fantasy", "isometric",
 #'   "line_art", "origami", "pixel_art", "abstract", "impressionist",
 #'   "renaissance", "watercolor", "biomechanical", "retro_futuristic",
 #'   "fighting_game", "mario", "pokemon", "street_fighter", "horror",
@@ -17,7 +17,7 @@ generate_prompts <- function(response_prompts, style) {
       negative_prompt = "photo, deformed, black and white, realism, disfigured, low contrast"
     ),
     comics = list(
-      prompt = "comic {prompt} . graphic illustration, comic art, graphic novel art, vibrant, highly detailed",
+      prompt = "comic book {prompt} . graphic illustration, comic art, graphic novel art, vibrant, highly detailed",
       negative_prompt = "photograph, deformed, glitch, noisy, realistic, stock photo"
     ),
     lego_movie = list(
@@ -32,10 +32,10 @@ generate_prompts <- function(response_prompts, style) {
       prompt = "ethereal fantasy concept art of {prompt} . magnificent, celestial, ethereal, painterly, epic, majestic, magical, fantasy art, cover art, dreamy",
       negative_prompt = "photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white"
     ),
-    isometric = list(
-      prompt = "isometric style {prompt} . vibrant, beautiful, crisp, detailed, ultra detailed, intricate",
-      negative_prompt = "deformed, mutated, ugly, disfigured, blur, blurry, noise, noisy, realistic, photographic"
-    ),
+    # isometric = list(
+    #   prompt = "isometric style {prompt} . vibrant, beautiful, crisp, detailed, ultra detailed, intricate",
+    #   negative_prompt = "deformed, mutated, ugly, disfigured, blur, blurry, noise, noisy, realistic, photographic"
+    # ),
     line_art = list(
       prompt = "line art drawing {prompt} . professional, sleek, modern, minimalist, graphic, line art, vector graphics",
       negative_prompt = "anime, photorealistic, 35mm film, deformed, glitch, blurry, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, mutated, realism, realistic, impressionism, expressionism, oil, acrylic"

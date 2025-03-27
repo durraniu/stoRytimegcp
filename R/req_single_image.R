@@ -9,7 +9,6 @@
 #' @return Request.
 req_single_image <- function(prompt,
                              negative_prompt,
-                             # instructions,
                              ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
                              API_KEY = Sys.getenv("API_KEY"),
                              base_url = cf_base_url()){
@@ -22,13 +21,10 @@ req_single_image <- function(prompt,
     httr2::req_headers(
       "Authorization" = paste("Bearer", API_KEY)
     ) |>
-    httr2::req_body_json(list(prompt = paste0(
-      prompt#,
-      # " ",
-      # instructions
-    ),
-    negative_prompt = negative_prompt,
-    guidance = 15)) |>
+    httr2::req_body_json(list(
+      prompt = prompt,
+      negative_prompt = negative_prompt,
+      guidance = 15)) |>
     httr2::req_method("POST")
 }
 
@@ -37,7 +33,7 @@ req_single_image <- function(prompt,
 #' @param response Response from Workers AI Model API
 #'
 #' @return Image or NULL.
-get_image <- function(response){
+get_raw_image <- function(response){
   if (response$status_code == 200){
     png_img <- httr2::resp_body_raw(response)
   } else{

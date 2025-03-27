@@ -13,11 +13,12 @@ get_prompts_for_images <- function(story,
                       API_KEY = Sys.getenv("API_KEY"),
                       base_url = cf_base_url()){
 
-  if (is.null(story)){
+  if (is.null(story) | length(story) == 0){
     return(NULL)
   }
-  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
   # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
+  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
+
 
   # Make an API request
   response_prompts <- httr2::request(url_txt) |>
