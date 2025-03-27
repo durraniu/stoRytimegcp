@@ -16,8 +16,8 @@ get_prompts_for_images <- function(story,
   if (is.null(story) | length(story) == 0){
     return(NULL)
   }
-  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
-  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
+  url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.1-8b-instruct-fast")
+  # url_txt <- paste0(base_url, ACCOUNT_ID, "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
 
 
   # Make an API request
@@ -31,7 +31,11 @@ get_prompts_for_images <- function(story,
         list(role = "system",
              content = paste0(
                "You write detailed prompts for generating images when story text is provided to you. The story contains ",
-               length(story), " sentences. Each story sentence ends with a period. Write a detailed prompt for each story sentence that describes the scene and characters. A text to image generation model, stable diffusion XL, will then use your prompt to draw an image. Each prompt should include the physical traits of the subject(s) and object(s) of the sentence, the facial expressions of the subject(s) and object(s) (if needed), what the subject(s) are doing and what the subject(s) are wearing, the background, etc. The physical traits of the subjects and objects must be identical in all prompts  so that the model draws the same character in each image. Use commas for building a prompt per sentence. There should be one sentence containing the prompt per one sentence of the story. Each prompt must contain all the relevant details and should not refer to a previous prompt. Return the prompt sentences only. The number of sentences of prompts you return must be equal to the number of sentences of the story."
+               length(story), " sentences. Each story sentence ends with a period. Write a detailed prompt for each story sentence that describes the scene and characters. A text to image generation model, stable diffusion XL, will then use your prompt to draw an image. Each prompt should include the physical traits of the subject(s) and object(s) of the sentence, the facial expressions of the subject(s) and object(s) (if needed), what the subject(s) are doing and what the subject(s) are wearing, the background, etc. The physical traits of the subjects and objects must be identical in all prompts  so that the model draws the same character in each image.",
+               "For example, if there are two senetences in a story e.g.: '[1] Once upon a time, in a small village surrounded by a dense forest, there lived a curious girl named Lily who loved to explore the woods and climb trees.
+[2] One dark and stormy night, as she was wandering deeper into the forest than she had ever gone before, she stumbled upon an old, abandoned mansion that seemed to be hidden behind a thick veil of bushes.'. Then the prompts for generating images should be detailed and consistent like: '[1] Lily, a girl with long, curly brown hair, bright green eyes, and a small nose, wearing a yellow sundress with white flowers and brown boots, is standing in the middle of a small village surrounded by a dense forest with tall trees, thatched roof cottages, and a cloudy sky, looking excited and eager to explore, with a few villagers in the background.
+[2] Lily, a girl with long, curly brown hair, bright green eyes, and a small nose, wearing a yellow sundress with white flowers and brown boots, is walking alone in a dark and stormy forest with tall trees, their branches swaying in the wind, and flashes of lightning illuminating the sky, looking a bit scared, with an old, abandoned mansion visible in the background, hidden behind a thick veil of bushes.'",
+               "Use commas for building a prompt per sentence. There should be one sentence containing the prompt per one sentence of the story. Each prompt must contain all the relevant details and should not refer to a previous prompt. Return the prompt sentences only. The number of sentences of prompts you return must be equal to the number of sentences of the story. Do not return numbers like [1], [2], etc."
              )),
         list(
           role = "user",
