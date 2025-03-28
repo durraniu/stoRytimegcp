@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Once upon a time, in a far-off kingdom hidden behind a veil of sparkling mist and surrounded by towering mountains that touched the sky, Snow White opened the door to a small, cozy cottage that was nestled among the tall trees, its roof covered in a thick layer of snow that glistened like a thousand tiny diamonds in the warm sunlight. As she stepped inside, she was greeted by the warm smile of an old woman who was sitting by the fireplace, stirring a big pot of steaming hot soup that filled the air with the delicious aroma of freshly baked bread and roasting vegetables, making Snow White's stomach growl with hunger. The old woman, who introduced herself as Granny, welcomed Snow White with open arms and invited her to sit down at the wooden table, where a beautiful feast was laid out, complete with golden plates, sparkling glasses, and a delicious-looking cake that was adorned with colorful flowers and candies. But just as Snow White was about to take a bite of the cake, a loud knock at the door interrupted the peaceful atmosphere, and Granny's face turned pale as she whispered to Snow White that it was the wicked queen, who had been searching for Snow White everywhere and would stop at nothing to catch her. In the end, Snow White and Granny were able to outsmart the wicked queen by disguising Snow White as an old hag, and they lived happily ever after, surrounded by the beauty and magic of the enchanted forest, where animals talked and flowers bloomed in every color of the rainbow.",
+        "usage": {
+            "prompt_tokens": 401,
+            "completion_tokens": 307,
+            "total_tokens": 708
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}

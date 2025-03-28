@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Snow White, a girl with long, blonde hair, bright blue eyes, and a small nose, is standing in front of a small, cozy cottage that is nestled among the tall trees, its roof covered in a thick layer of snow that glistens like a thousand tiny diamonds in the warm sunlight, with towering mountains visible in the background, their peaks reaching for the sky, and a veil of sparkling mist surrounding the kingdom. Snow White, a girl with long, blonde hair, bright blue eyes, and a small nose, is standing inside the cozy cottage, looking at the old woman who is sitting by the fireplace, stirring a big pot of steaming hot soup that fills the air with the delicious aroma of freshly baked bread and roasting vegetables, with a warm smile on the old woman's face, and a wooden table in the background, set with golden plates, sparkling glasses, and a delicious-looking cake adorned with colorful flowers and candies. The old woman, a woman with short, curly gray hair, kind brown eyes, and a warm smile, is sitting by the fireplace, stirring a big pot of steaming hot soup, wearing a long, colorful dress with a white apron, and a wooden spoon in her hand, with Snow White standing in front of her, looking hungry and curious. The old woman, a woman with short, curly gray hair, kind brown eyes, and a worried expression, is standing next to Snow White, who is standing by the door, wearing an old, tattered cloak and a pointed hat, with a look of fear on Snow White's face, as the wicked queen, a woman with long, black hair, red lips, and a scowl on her face, is standing at the doorstep, looking angry and frustrated, with a dark and ominous background. Snow White, a girl with long, blonde hair, bright blue eyes, and a small nose, is sitting at the wooden table, wearing a yellow sundress with white flowers, laughing with the old woman, who is smiling and happy, surrounded by the beauty and magic of the enchanted forest, with animals roaming in the background, and flowers blooming in every color of the rainbow, under a bright and sunny sky.",
+        "usage": {
+            "prompt_tokens": 853,
+            "completion_tokens": 448,
+            "total_tokens": 1301
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}
