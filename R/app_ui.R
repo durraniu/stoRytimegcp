@@ -4,6 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @import bslib
+#' @import slickR
 #' @noRd
 app_ui <- function(request) {
   tagList(
@@ -39,15 +40,16 @@ app_ui <- function(request) {
               md = c(-1, 6, 4, -1)
             ),
           div(
-            h1("CREATE", br(), "STORIES", br(), "WITH AI",
+            h1("CREATE", "STORIES", br(), "WITH AI",
                class = "hero-title"
                ),
             p("Create beautiful and alive stories with text-generation and image-generation models!", class = "hero-text"),
             input_task_button("get_started2", "GET STARTED", class = "btn-lg")
           ),
-          tags$img(src = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzMzNHV6dGs4NnZtajdsbzZ4eTc3MjRrbWZoZG96MXM5ZmFtdHFrYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SS40oFiyppsHhvClo2/giphy.gif"#,
-                   # class = "hero-image"
-                   )
+          # tags$img(src = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzMzNHV6dGs4NnZtajdsbzZ4eTc3MjRrbWZoZG96MXM5ZmFtdHFrYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SS40oFiyppsHhvClo2/giphy.gif"#,
+          #          # class = "hero-image"
+          #          )
+          slickROutput("s", height = "200px")
         )
       )
 

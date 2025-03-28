@@ -3,12 +3,21 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import slickR
 #' @noRd
 app_server <- function(input, output, session) {
 
   # telemetry$start_session(
   #   track_values = TRUE
   # )
+
+  output$s <- renderSlickR({
+    x <- slickR(obj = paste0("inst/app/www/images/", list.files("inst/app/www/images/")), slideId = "slick1")
+    # y <- slickR(obj = c("img1", "img2", "img3"), slideType = "p", slideId = "slick2")
+    # y %synch% x
+    x + settings(dots = TRUE, autoplay = TRUE, autoplaySpeed = 1000)
+  })
+
 
   # Your application server logic
   story <- reactiveVal()

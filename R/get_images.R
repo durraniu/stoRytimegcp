@@ -8,10 +8,7 @@
 #'   "fighting_game", "mario", "pokemon", "street_fighter", "horror",
 #'   "manga", "space", "paper_mache", "tilt_shift".
 #'
-#' @returns
-#' @export
-#'
-#' @examples
+#' @returns List of raw images.
 get_images <- function(response_prompts, style){
   image_prompts <- generate_prompts(response_prompts, style)
 
