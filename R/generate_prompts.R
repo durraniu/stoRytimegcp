@@ -32,10 +32,6 @@ generate_prompts <- function(response_prompts, style) {
       prompt = "ethereal fantasy concept art of {prompt} . magnificent, celestial, ethereal, painterly, epic, majestic, magical, fantasy art, cover art, dreamy",
       negative_prompt = "photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white"
     ),
-    # isometric = list(
-    #   prompt = "isometric style {prompt} . vibrant, beautiful, crisp, detailed, ultra detailed, intricate",
-    #   negative_prompt = "deformed, mutated, ugly, disfigured, blur, blurry, noise, noisy, realistic, photographic"
-    # ),
     line_art = list(
       prompt = "line art drawing {prompt} . professional, sleek, modern, minimalist, graphic, line art, vector graphics",
       negative_prompt = "anime, photorealistic, 35mm film, deformed, glitch, blurry, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, mutated, realism, realistic, impressionism, expressionism, oil, acrylic"
@@ -48,18 +44,10 @@ generate_prompts <- function(response_prompts, style) {
       prompt = "pixel-art {prompt} . low-res, blocky, pixel art style, 8-bit graphics",
       negative_prompt = "sloppy, messy, blurry, noisy, highly detailed, ultra textured, photo, realistic"
     ),
-    # abstract = list(
-    #   prompt = "abstract style {prompt} . non-representational, colors and shapes, expression of feelings, imaginative, highly detailed",
-    #   negative_prompt = "realistic, photographic, figurative, concrete"
-    # ),
     impressionist = list(
       prompt = "impressionist painting {prompt} . loose brushwork, vibrant color, light and shadow play, captures feeling over form",
       negative_prompt = "anime, photorealistic, 35mm film, deformed, glitch, low contrast, noisy"
     ),
-    # renaissance = list(
-    #   prompt = "renaissance style {prompt} . realistic, perspective, light and shadow, religious or mythological themes, highly detailed",
-    #   negative_prompt = "ugly, deformed, noisy, blurry, low contrast, modernist, minimalist, abstract"
-    # ),
     watercolor = list(
       prompt = "watercolor painting {prompt} . vibrant, beautiful, painterly, detailed, textural, artistic",
       negative_prompt = "anime, photorealistic, 35mm film, deformed, glitch, low contrast, noisy"
@@ -81,7 +69,7 @@ generate_prompts <- function(response_prompts, style) {
       negative_prompt = "realistic, modern, horror, dystopian, violent"
     ),
     pokemon = list(
-      prompt = "Pokémon style {prompt} . vibrant, cute, anime, fantasy, reminiscent of Pokémon series",
+      prompt = "Pokemon style {prompt} . vibrant, cute, anime, fantasy, reminiscent of Pokemon series",
       negative_prompt = "realistic, modern, horror, dystopian, violent"
     ),
     street_fighter = list(
@@ -100,10 +88,6 @@ generate_prompts <- function(response_prompts, style) {
       prompt = "space-themed {prompt} . cosmic, celestial, stars, galaxies, nebulas, planets, science fiction, highly detailed",
       negative_prompt = "earthly, mundane, ground-based, realism"
     ),
-    # paper_mache = list(
-    #   prompt = "paper mache representation of {prompt} . 3D, sculptural, textured, handmade, vibrant, fun",
-    #   negative_prompt = "2D, flat, photo, sketch, digital art, deformed, noisy, blurry"
-    # ),
     tilt_shift = list(
       prompt = "tilt-shift photo of {prompt} . selective focus, miniature effect, blurred background, highly detailed, vibrant, perspective control",
       negative_prompt = "blurry, noisy, deformed, flat, low contrast, unrealistic, oversaturated, underexposed"

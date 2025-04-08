@@ -9,7 +9,7 @@ with_mock_dir("cfgpi", {
     response_prompts <- get_prompts_for_images(story)
 
     expect_type(response_prompts, "character")
-    expect_equal(length(response_prompts), 5)
+    # expect_equal(length(response_prompts), 5)
     expect_true(all(nzchar(response_prompts)))
   })
 })

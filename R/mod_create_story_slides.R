@@ -53,7 +53,7 @@ mod_create_story_slides_ui <- function(id) {
           "Retro-Futuristic" = "retro_futuristic",
           "Fighting Game" = "fighting_game",
           "Mario" = "mario",
-          "Pokémon" = "pokemon",
+          "Pokemon" = "pokemon",
           "Street Fighter" = "street_fighter",
           "Horror" = "horror",
           "Manga" = "manga",

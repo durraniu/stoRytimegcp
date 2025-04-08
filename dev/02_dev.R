@@ -23,6 +23,7 @@ usethis::use_package("bsicons")
 usethis::use_package("quarto")
 usethis::use_package("httr2")
 usethis::use_package("base64enc")
+usethis::use_package("slickR")
 usethis::use_package("sentryR")
 
 ## Add modules ----

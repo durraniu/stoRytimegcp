@@ -16,6 +16,7 @@ Imports:
     quarto,
     sentryR,
     shiny,
+    slickR,
     stringr,
     utils
 Encoding: UTF-8
