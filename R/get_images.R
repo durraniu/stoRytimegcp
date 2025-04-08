@@ -22,6 +22,7 @@ get_images <- function(response_prompts, style){
       }
     )
     resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
+    # resps <- lapply(reqs, httr2::req_perform)
 
     # All images
     new_all_imgs <- lapply(resps, get_raw_image)

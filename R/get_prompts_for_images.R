@@ -8,10 +8,10 @@
 #'
 #' @return Character vector with multiple sentences.
 get_prompts_for_images <- function(story,
-                      max_tokens = 1000,
-                      ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
-                      API_KEY = Sys.getenv("API_KEY"),
-                      base_url = cf_base_url()){
+                                   max_tokens = 1000,
+                                   ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
+                                   API_KEY = Sys.getenv("API_KEY"),
+                                   base_url = cf_base_url()){
 
   if (is.null(story) | length(story) == 0){
     return(NULL)
@@ -35,7 +35,7 @@ get_prompts_for_images <- function(story,
                "For example, if there are two senetences in a story e.g.: '[1] Once upon a time, in a small village surrounded by a dense forest, there lived a curious girl named Lily who loved to explore the woods and climb trees.
 [2] One dark and stormy night, as she was wandering deeper into the forest than she had ever gone before, she stumbled upon an old, abandoned mansion that seemed to be hidden behind a thick veil of bushes.'. Then the prompts for generating images should be detailed and consistent like: '[1] Lily, a girl with long, curly brown hair, bright green eyes, and a small nose, wearing a yellow sundress with white flowers and brown boots, is standing in the middle of a small village surrounded by a dense forest with tall trees, thatched roof cottages, and a cloudy sky, looking excited and eager to explore, with a few villagers in the background.
 [2] Lily, a girl with long, curly brown hair, bright green eyes, and a small nose, wearing a yellow sundress with white flowers and brown boots, is walking alone in a dark and stormy forest with tall trees, their branches swaying in the wind, and flashes of lightning illuminating the sky, looking a bit scared, with an old, abandoned mansion visible in the background, hidden behind a thick veil of bushes.'",
-               "Use commas for building a prompt per sentence. There should be one sentence containing the prompt per one sentence of the story. Each prompt must contain all the relevant details and should not refer to a previous prompt. Return the prompt sentences only. The number of sentences of prompts you return must be equal to the number of sentences of the story. Do not return numbers like [1], [2], etc."
+               "Use commas for building a prompt per sentence. There should be one sentence containing the prompt per one sentence of the story. Each prompt must contain all the relevant details and should not refer to a previous prompt. Return the prompt sentences only. Do not say something like 'Here are the detailed prompts'. The number of sentences of prompts you return must be equal to the number of sentences of the story. Do not return numbers like [1], [2], etc."
              )),
         list(
           role = "user",
@@ -53,7 +53,9 @@ get_prompts_for_images <- function(story,
   if (isTRUE(response_prompts$success)){
     full_text <- response_prompts$result$response
     cleaned_text <- gsub("\n", " ", full_text)
-    split_text <- unlist(strsplit(cleaned_text, "(?<!\\b(?:Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|etc|U\\.S))(?<=\\.)\\s+(?=[A-Z])", perl = TRUE))
+    temp_text <- gsub("\\b(Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|etc|U\\.S)\\.", "\\1<PERIOD>", cleaned_text)
+    split_text <- unlist(strsplit(temp_text, "(?<=\\.)\\s+(?=[A-Z])", perl = TRUE))
+    split_text <- gsub("<PERIOD>", ".", split_text)
   } else {
     split_text <- NULL
   }

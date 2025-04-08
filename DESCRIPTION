@@ -14,6 +14,7 @@ Imports:
     httr2,
     lexicon,
     quarto,
+    sentryR,
     shiny,
     stringr,
     utils

@@ -22,13 +22,13 @@ usethis::use_package("bslib")
 usethis::use_package("bsicons")
 usethis::use_package("quarto")
 usethis::use_package("httr2")
-usethis::use_package("rvest")
 usethis::use_package("base64enc")
+usethis::use_package("sentryR")
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-# golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-# golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "create_story_slides", with_test = FALSE)
+
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -37,11 +37,10 @@ usethis::use_package("base64enc")
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
-# golem::add_js_file("script")
+golem::add_js_file("scroll")
 # golem::add_js_handler("handlers")
-golem::add_css_file("styles")
-# golem::add_sass_file("custom")
-# golem::add_any_file("file.json")
+# golem::add_css_file("styles")
+golem::add_sass_file("style")
 
 ## Add internal datasets ----
 ## If you have data in your package

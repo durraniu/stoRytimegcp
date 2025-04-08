@@ -56,7 +56,8 @@ get_audio <- function(text){
     return(NULL)
   }
   reqs <- lapply(text, get_audio_req)
-  resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
+  resps <- lapply(reqs, httr2::req_perform)
+  # resps <- httr2::req_perform_parallel(reqs, on_error = "continue")
   # All audio
   auds <- tryCatch({
     lapply(resps, get_raw_audio)

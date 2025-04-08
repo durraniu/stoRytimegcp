@@ -1,7 +1,8 @@
 #' Request a single image from API
 #'
 #' @param prompt Description of image
-#' @param instructions Instructions for image drawing
+#' @param negative_prompt Description of what to exclude
+#' @param num_steps Number of diffusion steps. Max 20
 #' @param ACCOUNT_ID Cloudflare Workers AI Model API account ID
 #' @param API_KEY Cloudflare Workers AI Model API key
 #' @param base_url Base URL of Workers AI Model API
@@ -9,6 +10,7 @@
 #' @return Request.
 req_single_image <- function(prompt,
                              negative_prompt,
+                             num_steps = 10,
                              ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
                              API_KEY = Sys.getenv("API_KEY"),
                              base_url = cf_base_url()){
@@ -24,7 +26,8 @@ req_single_image <- function(prompt,
     httr2::req_body_json(list(
       prompt = prompt,
       negative_prompt = negative_prompt,
-      guidance = 15)) |>
+      guidance = 15,
+      num_steps = num_steps)) |>
     httr2::req_method("POST")
 }
 
@@ -34,6 +37,11 @@ req_single_image <- function(prompt,
 #'
 #' @return Image or NULL.
 get_raw_image <- function(response){
+
+  if(is.null(response$status_code)){
+    return(NULL)
+  }
+
   if (response$status_code == 200){
     png_img <- httr2::resp_body_raw(response)
   } else{

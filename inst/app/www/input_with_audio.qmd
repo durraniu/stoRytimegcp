@@ -1,0 +1,103 @@
+---
+title: "stoRy time with shiny and quarto"
+author: "A story written by you & AI"
+format: 
+  revealjs:
+    embed-resources: true
+    center: true
+    transition: slide
+    background-transition: fade
+    height: 1000
+    width: 1600
+    margin: 0.025  
+    padding: 0.05
+    scrollable: true
+params:
+  story_prompt: ""
+  story: ""
+  imgs: ""
+  audios: ""
+  
+---
+
+# 
+
+`r params$story_prompt`
+
+
+```{r, echo=FALSE, results='asis'}
+length_story <- length(params$story)
+n_parts <- round(length_story/3)
+
+# for (i in seq_along(params$story)) {
+for (i in 1:n_parts) {
+  cat("## \n\n")
+  cat(":::: {.columns}\n\n")
+  
+  # Left column with story text - maximized for text content
+  cat("::: {.column width=\"60%\" .scrollable}\n")
+  cat(params$story[[i]], "\n")
+  cat(":::\n\n")
+  
+  # Right column with image as an HTML <img> tag
+  cat("::: {.column width=\"40%\"}\n")
+  img_html <- paste0("<img src='data:image/jpeg;base64,", params$imgs[[i]], "' width='100%' />")
+  cat(img_html, "\n")
+  cat(":::\n\n")
+  
+  cat("::::\n\n")
+  
+  cat("<footer>\n")
+  if (!is.null(params$audios)) {
+    aud_html <- paste0("<audio controls><source src='data:audio/mp3;base64,", params$audios[[i]], "' type='audio/mp3'></audio>")
+    cat(aud_html, "\n")
+  }
+  cat("</footer>\n\n")
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+for (i in (n_parts+1)) {
+  cat("## \n\n")
+  cat("<div class=\"scrollable\">\n")
+  cat(params$story[[i]], "\n")
+  cat("</div>\n\n")
+
+  img_html <- paste0("<img src='data:image/jpeg;base64,", params$imgs[[i]], "' width='50%' style='display: block; margin: auto;' />")
+  cat(img_html, "\n")
+  
+  cat("<footer>\n")
+  if (!is.null(params$audios)) {
+    aud_html <- paste0("<audio controls><source src='data:audio/mp3;base64,", params$audios[[i]], "' type='audio/mp3'></audio>")
+    cat(aud_html, "\n")
+  }
+  cat("</footer>\n\n")
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+for (i in (n_parts+2):length_story) {
+  cat("## \n\n")
+  cat(":::: {.columns}\n\n")
+  
+  # Left column with image
+  cat("::: {.column width=\"40%\"}\n")
+  img_html <- paste0("<img src='data:image/jpeg;base64,", params$imgs[[i]], "' width='100%' />")
+  cat(img_html, "\n")
+  cat(":::\n\n")
+  
+  # Right column with story text - maximized for text content
+  cat("::: {.column width=\"60%\" .scrollable}\n")
+  cat(params$story[[i]], "\n")
+  cat(":::\n\n")
+  
+  cat("::::\n\n")
+  
+  cat("<footer>\n")
+  if (!is.null(params$audios)) {
+    aud_html <- paste0("<audio controls><source src='data:audio/mp3;base64,", params$audios[[i]], "' type='audio/mp3'></audio>")
+    cat(aud_html, "\n")
+  }
+  cat("</footer>\n\n")
+}
+```
