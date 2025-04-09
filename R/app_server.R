@@ -7,6 +7,7 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+
   #--**********************************************
   # Sentry settings -----
   ## Sentry is a service that is used to monitor
@@ -91,5 +92,15 @@ app_server <- function(input, output, session) {
   # Revealjs slide deck -----
   #--**********************************************
   mod_create_story_slides_server("main")
+
+
+  #--**********************************************
+  # Download stories -----
+  #--**********************************************
+  mod_download_stories_server("apocalypse", "Apocalypse", "apocalypse.html")
+  mod_download_stories_server("dracula", "Dracula", "dracula.html")
+  mod_download_stories_server("future", "Future", "future.html")
+  mod_download_stories_server("harry_potter_dream", "Harry Potter Dream", "harry_potter_dream.html")
+  mod_download_stories_server("narnia", "Narnia", "narnia.html")
 
 }

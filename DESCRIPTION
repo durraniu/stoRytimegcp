@@ -12,10 +12,13 @@ Imports:
     config,
     golem,
     httr2,
+    jsonlite,
     lexicon,
+    mirai,
     quarto,
     sentryR,
     shiny,
+    shinyjs,
     slickR,
     stringr,
     utils

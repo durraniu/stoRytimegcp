@@ -32,7 +32,15 @@ app_ui <- function(request) {
         ),
         # Saved stories
         nav_panel(
-          "Explore"
+          "Explore",
+          layout_column_wrap(
+            width = 1/2,
+            mod_download_stories_ui("apocalypse", "Apocalypse"),
+            mod_download_stories_ui("dracula", "Dracula"),
+            mod_download_stories_ui("future", "Future"),
+            mod_download_stories_ui("harry_potter_dream", "Harry Potter Dream"),
+            mod_download_stories_ui("narnia", "Narnia")
+          )
         )
       )
 
@@ -47,6 +55,7 @@ app_ui <- function(request) {
 #'
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
+#' @importFrom shinyjs useShinyjs
 #' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
@@ -61,6 +70,7 @@ golem_add_external_resources <- function() {
       app_title = "stoRytimegcp"
     ),
     # Add here other external resources
-    useBusyIndicators()
+    useBusyIndicators(),
+    useShinyjs()
   )
 }

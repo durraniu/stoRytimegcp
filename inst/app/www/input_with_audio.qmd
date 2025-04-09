@@ -7,7 +7,7 @@ format:
     center: true
     transition: slide
     background-transition: fade
-    height: 1000
+    height: 1150
     width: 1600
     margin: 0.025  
     padding: 0.05

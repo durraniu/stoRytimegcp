@@ -67,6 +67,17 @@ mod_create_story_slides_ui <- function(id) {
         value = "stoRy time with shiny and quarto"
       ),
       bslib::input_switch(ns("aud_on"), "Include narration"),
+      selectInput(
+        # selectize = FALSE,
+        selected = "default",
+        inputId = ns("story_theme1"),
+        label = "Select slide theme:",
+        choices = c("dark", "beige", "blood", "league", "moon", "night",
+                    "serif", "simple", "sky", "solarized", "default")
+      ),
+
+      p("Note: It takes a few minutes to create and display your story. Before you click the button below, go to the 'Explore' page and download a few stories to read while waiting. Then come back and click 'Create Story'."),
+
       bslib::input_task_button(ns("create_story"), "Create Story")
     ),
 
@@ -78,9 +89,9 @@ mod_create_story_slides_ui <- function(id) {
           placement = "right",
           bsicons::bs_icon("gear", class = "ms-auto"),
           selectInput(
-            selectize = FALSE,
+            # selectize = FALSE,
             selected = "default",
-            inputId = ns("story_theme"),
+            inputId = ns("story_theme2"),
             label = "Select theme:",
             choices = c("dark", "beige", "blood", "league", "moon", "night",
                         "serif", "simple", "sky", "solarized", "default")
@@ -235,7 +246,7 @@ mod_create_story_slides_server <- function(id){
 
               create_slides(
                 input_qmd = temp_qmd,
-                theme = input$story_theme,
+                theme = input$story_theme1,
                 title = input$story_title,
                 prompt = input$story_prompt,
                 story = story(),
@@ -258,7 +269,7 @@ mod_create_story_slides_server <- function(id){
 
               create_slides(
                 input_qmd = temp_qmd,
-                theme = input$story_theme,
+                theme = input$story_theme1,
                 title = input$story_title,
                 prompt = input$story_prompt,
                 story = story(),
@@ -283,7 +294,7 @@ mod_create_story_slides_server <- function(id){
 
 
     observeEvent(input$update_theme, {
-      req(input$story_prompt, input$story_theme, story(), all_imgs())
+      req(input$story_prompt, input$story_theme2, story(), all_imgs())
 
       html_files <- list.files(app_sys("app/www"), pattern = "\\.html$", full.names = TRUE)
       unlink(html_files)
@@ -311,7 +322,7 @@ mod_create_story_slides_server <- function(id){
 
             create_slides(
               input_qmd = temp_qmd,
-              theme = input$story_theme,
+              theme = input$story_theme2,
               title = input$story_title,
               prompt = input$story_prompt,
               story = story(),
@@ -334,7 +345,7 @@ mod_create_story_slides_server <- function(id){
 
             create_slides(
               input_qmd = temp_qmd,
-              theme = input$story_theme,
+              theme = input$story_theme2,
               title = input$story_title,
               prompt = input$story_prompt,
               story = story(),

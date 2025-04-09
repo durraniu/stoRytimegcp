@@ -22,6 +22,9 @@ usethis::use_package("bslib")
 usethis::use_package("bsicons")
 usethis::use_package("quarto")
 usethis::use_package("httr2")
+usethis::use_package("jsonlite")
+usethis::use_package("mirai")
+usethis::use_package("shinyjs")
 usethis::use_package("base64enc")
 usethis::use_package("slickR")
 usethis::use_package("sentryR")
@@ -29,7 +32,7 @@ usethis::use_package("sentryR")
 ## Add modules ----
 ## Create a module infrastructure in R/
 golem::add_module(name = "create_story_slides", with_test = FALSE)
-
+golem::add_module(name = "download_stories", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
