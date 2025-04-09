@@ -5,4 +5,4 @@
 pkgload::load_all(export_all = FALSE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = TRUE)
 # storytimegcp::run_app() # add parameters here (if any)
-with(mirai::daemons(1), shiny::runApp(run_app()))
+with(mirai::daemons(2), shiny::runApp(run_app()))

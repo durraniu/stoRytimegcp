@@ -10,104 +10,114 @@
 #' @import bslib
 mod_create_story_slides_ui <- function(id) {
   ns <- NS(id)
-  layout_columns(
-    col_widths = breakpoints(
-      sm = c(12),
-      md = c(12),
-      lg = c(3, 9)
-    ),
-    card(
-      card_header("Settings"),
+  # layout_columns(
+  #   col_widths = breakpoints(
+  #     sm = c(12),
+  #     md = c(12),
+  #     lg = c(3, 9)
+  #   ),
+  div(
+    class = "custom-sidebar",
+    layout_sidebar(
+      sidebar = sidebar(
+        open = FALSE,
+        # width = "350",
+        title = "Settings",
+        # card(
+        #   card_header("Settings"),
+          numericInput(ns("num_of_sentences"),
+                       label = "How may sentences do you want in the story?",
+                       value = 5, min = 3, max = 10
+          ),
+          # textAreaInput(
+          #   "drawing_instructions",
+          #   label = "Instructions for drawing images:",
+          #   value = drawing_instructions,
+          #   width = "100%",
+          #   height = "200px"
+          # ),
+          selectInput(
+            ns("drawing_instructions"),
+            label = "Select the style for drawing images:",
+            choices = c(
+              "Anime" = "anime",
+              "Comics" = "comics",
+              "LEGO Movie" = "lego_movie",
+              "Play-Doh" = "play_doh",
+              "Ethereal Fantasy" = "ethereal_fantasy",
+              "Line Art" = "line_art",
+              "Origami" = "origami",
+              "Pixel Art" = "pixel_art",
+              "Impressionist" = "impressionist",
+              "Watercolor" = "watercolor",
+              "Biomechanical" = "biomechanical",
+              "Retro-Futuristic" = "retro_futuristic",
+              "Fighting Game" = "fighting_game",
+              "Mario" = "mario",
+              "Pokemon" = "pokemon",
+              "Street Fighter" = "street_fighter",
+              "Horror" = "horror",
+              "Manga" = "manga",
+              "Space" = "space",
+              "Tilt Shift" = "tilt_shift"
+            )
+          ),
+          textInput(
+            ns("story_title"),
+            label = "Provide a story title:",
+            value = "stoRy time with shiny and quarto"
+          ),
+          bslib::input_switch(ns("aud_on"), "Include narration"),
+          selectInput(
+            # selectize = FALSE,
+            selected = "default",
+            inputId = ns("story_theme1"),
+            label = "Select slide theme:",
+            choices = c("dark", "beige", "blood", "league", "moon", "night",
+                        "serif", "simple", "sky", "solarized", "default")
+          )
+        # )
+      ),
+
       textAreaInput(
         ns("story_prompt"),
         label = "Write here what you want the story to be about:",
         width = "100%",
         height = "100px"
       ),
-      numericInput(ns("num_of_sentences"),
-                   label = "How may sentences do you want in the story?",
-                   value = 5, min = 3, max = 10
-      ),
-      # textAreaInput(
-      #   "drawing_instructions",
-      #   label = "Instructions for drawing images:",
-      #   value = drawing_instructions,
-      #   width = "100%",
-      #   height = "200px"
-      # ),
-      selectInput(
-        ns("drawing_instructions"),
-        label = "Select the style for drawing images:",
-        choices = c(
-          "Anime" = "anime",
-          "Comics" = "comics",
-          "LEGO Movie" = "lego_movie",
-          "Play-Doh" = "play_doh",
-          "Ethereal Fantasy" = "ethereal_fantasy",
-          "Line Art" = "line_art",
-          "Origami" = "origami",
-          "Pixel Art" = "pixel_art",
-          "Impressionist" = "impressionist",
-          "Watercolor" = "watercolor",
-          "Biomechanical" = "biomechanical",
-          "Retro-Futuristic" = "retro_futuristic",
-          "Fighting Game" = "fighting_game",
-          "Mario" = "mario",
-          "Pokemon" = "pokemon",
-          "Street Fighter" = "street_fighter",
-          "Horror" = "horror",
-          "Manga" = "manga",
-          "Space" = "space",
-          "Tilt Shift" = "tilt_shift"
-        )
-      ),
-      textInput(
-        ns("story_title"),
-        label = "Provide a story title:",
-        value = "stoRy time with shiny and quarto"
-      ),
-      bslib::input_switch(ns("aud_on"), "Include narration"),
-      selectInput(
-        # selectize = FALSE,
-        selected = "default",
-        inputId = ns("story_theme1"),
-        label = "Select slide theme:",
-        choices = c("dark", "beige", "blood", "league", "moon", "night",
-                    "serif", "simple", "sky", "solarized", "default")
-      ),
 
       p("Note: It takes a few minutes to create and display your story. Before you click the button below, go to the 'Explore' page and download a few stories to read while waiting. Then come back and click 'Create Story'."),
 
-      bslib::input_task_button(ns("create_story"), "Create Story")
-    ),
+      bslib::input_task_button(ns("create_story"), "Create Story", btn_class = "btn-primary"),
 
-    card(
-      id = "story_card",
-      card_header(
-        "Story",
-        popover(
-          placement = "right",
-          bsicons::bs_icon("gear", class = "ms-auto"),
-          selectInput(
-            # selectize = FALSE,
-            selected = "default",
-            inputId = ns("story_theme2"),
-            label = "Select theme:",
-            choices = c("dark", "beige", "blood", "league", "moon", "night",
-                        "serif", "simple", "sky", "solarized", "default")
+      card(
+        id = "story_card",
+        card_header(
+          "Story",
+          popover(
+            placement = "right",
+            bsicons::bs_icon("gear", class = "ms-auto"),
+            selectInput(
+              # selectize = FALSE,
+              selected = "default",
+              inputId = ns("story_theme2"),
+              label = "Select theme:",
+              choices = c("dark", "beige", "blood", "league", "moon", "night",
+                          "serif", "simple", "sky", "solarized", "default")
+            ),
+            bslib::input_task_button(ns("update_theme"), "Update Theme"),
+            # actionButton("update_theme", "Update Theme"),
+            title = "Presentation settings"
           ),
-          bslib::input_task_button(ns("update_theme"), "Update Theme"),
-          # actionButton("update_theme", "Update Theme"),
-          title = "Presentation settings"
+          class = "d-flex align-items-center gap-1"
         ),
-        class = "d-flex align-items-center gap-1"
-      ),
-      uiOutput(ns("html_story")),
-      # downloadButton(ns("download_html"), "Download Story", class = "btn-primary"),
-      uiOutput(ns("download_ui")),
-      min_height = 600
-    )
+        uiOutput(ns("html_story")),
+        # downloadButton(ns("download_html"), "Download Story", class = "btn-primary"),
+        uiOutput(ns("download_ui")),
+        min_height = 600
+      )
 
+    )
   )
 }
 

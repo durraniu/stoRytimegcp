@@ -12,3 +12,75 @@
   margin-bottom: 30px
 
 
+/* ---------------Sidebar options-------------- */
+$sidebar-width: 350px
+$sidebar-transition: 0.3s
+$toggle-bg: var(--bs-primary)
+$toggle-color: white
+$toggle-padding: 15px 10px
+$toggle-radius: 0 5px 5px 0
+$toggle-top: 100px
+$toggle-right: -40px
+
+
+/* -----------------Sidebar------------------- */
+@mixin sidebar-toggle
+  padding: $toggle-padding
+  background-color: $toggle-bg
+  position: absolute
+  border-radius: $toggle-radius
+  writing-mode: vertical-rl
+  text-orientation: mixed
+  height: auto
+  z-index: 1000
+  display: flex
+  align-items: center
+  justify-content: center
+  transition: all $sidebar-transition
+  top: $toggle-top
+  right: $toggle-right
+
+@mixin sidebar-main
+  margin-left: $sidebar-width
+  transition: margin-left $sidebar-transition
+  width: calc(100% - $sidebar-width)
+
+@mixin sidebar-closed
+  left: 0
+  right: auto
+
+@mixin toggle-icon
+  fill: $toggle-color !important
+  margin-bottom: 10px
+
+@mixin toggle-text
+  color: $toggle-color
+  font-size: 1.1em
+  text-transform: uppercase
+  letter-spacing: 1px
+  margin-top: 10px
+
+@mixin sidebar-layout($sidebar-name, $open-text, $closed-text)
+  .#{$sidebar-name} .bslib-sidebar-layout
+    > .collapse-toggle
+      @include sidebar-toggle
+      & > .collapse-icon
+        @include toggle-icon
+      &::after
+        @include toggle-text
+      &[aria-expanded='true']::after
+        content: $open-text
+      &[aria-expanded='false']::after
+        content: $closed-text
+    > .main
+      @include sidebar-main
+    &:not(.sidebar-open)
+      > .collapse-toggle
+        @include sidebar-closed
+      > .main
+        margin-left: 0
+        width: 100%
+    > .sidebar
+      margin-left: 20px
+
+@include sidebar-layout("custom-sidebar", "Close Options", "Options")
