@@ -8,7 +8,6 @@
 #'
 #' @import shiny
 #' @import bslib
-#' @import mirai
 mod_download_stories_ui <- function(id, title) {
   ns <- NS(id)
   card(
@@ -39,20 +38,13 @@ mod_download_stories_server <- function(id, title, html_file){
     ns <- session$ns
     base_url <- "https://raw.githubusercontent.com/durraniu/examples-storytime/refs/heads/main/htmls/"
 
-    task <- ExtendedTask$new(
-      function(url, download_and_render_html) mirai(download_and_render_html(url), environment())
-    ) |> bind_task_button("downloadBtn")
 
     observeEvent(input$downloadBtn, {
       # Complete URL for this HTML file
       url <- paste0(base_url, html_file)
 
       # Download the HTML content
-      task$invoke(url, download_and_render_html)
-    })
-
-    observe({
-      html_content <- task$result()
+      html_content <- download_and_render_html(url)
 
       showNotification(paste0("Rendering ", title, "..."), type = "message", duration = 2)
 
@@ -64,5 +56,6 @@ mod_download_stories_server <- function(id, title, html_file){
 
       shinyjs::runjs(js_code)
     })
+
   })
 }
