@@ -88,7 +88,12 @@ mod_create_story_slides_ui <- function(id) {
 
       p("Note: It takes a few minutes to create and display your story. Before you click the button below, go to the 'Explore' page and download a few stories to read while waiting. Then come back and click 'Create Story'."),
 
-      bslib::input_task_button(ns("create_story"), "Create Story", btn_class = "btn-primary"),
+      div(
+        style = "text-align: center;",
+        bslib::input_task_button(ns("create_story"),
+                                 "Create Story",
+                                 btn_class = "btn-primary")
+      ),
 
       card(
         id = "story_card",

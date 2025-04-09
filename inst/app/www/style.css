@@ -55,7 +55,7 @@
 }
 
 .custom-sidebar .bslib-sidebar-layout > .main {
-  margin-left: 350px;
+  margin-left: 400px;
   transition: margin-left 0.3s;
   width: calc(100% - $sidebar-width);
 }

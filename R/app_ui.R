@@ -7,6 +7,9 @@
 #' @import slickR
 #' @noRd
 app_ui <- function(request) {
+
+  path_to_brand_yml <- app_sys("brand/_brand.yml")
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),

@@ -1,8 +1,7 @@
 
 # brand.yml ---------------------------------------------------------------
 
-path_to_brand_yml <- "inst/brand/_brand.yml"
-theme <- bslib::bs_theme(brand = path_to_brand_yml)
+theme <- bslib::bs_theme(brand = "inst/brand/_brand.yml")
 brand <- attr(theme, "brand")
 
 

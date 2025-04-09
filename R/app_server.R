@@ -83,7 +83,7 @@ app_server <- function(input, output, session) {
   #--**********************************************
 
   output$s <- renderSlickR({
-    x <- slickR(obj = paste0("inst/app/www/images/", list.files("inst/app/www/images/")), slideId = "slick1")
+    x <- slickR(obj = paste0("inst/app/www/images/", list.files(app_sys("app/www/images/"))), slideId = "slick1")
     x + settings(dots = TRUE, autoplay = TRUE, autoplaySpeed = 1000)
   })
 
