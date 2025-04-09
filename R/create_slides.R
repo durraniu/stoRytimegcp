@@ -34,7 +34,7 @@ create_slides <- function(input_qmd, theme, title, prompt, story, images, audios
           story = story,
           imgs = lapply(images, base64enc::base64encode)
         ),
-        quiet = TRUE
+        quiet = FALSE
       )
     )
   }
@@ -61,6 +61,6 @@ create_slides <- function(input_qmd, theme, title, prompt, story, images, audios
       imgs = lapply(images, base64enc::base64encode),
       audios = lapply(audios, base64enc::base64encode)
     ),
-    quiet = TRUE
+    quiet = FALSE
   )
 }

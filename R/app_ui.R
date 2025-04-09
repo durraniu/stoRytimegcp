@@ -12,38 +12,29 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     page_fluid(
-      theme = bs_theme(
-        # bootswatch = "vapor",
-        bg = "#ffffff",
-        fg = "#61212D",
-        primary = "#61212D",
-        secondary = "#03A9F4",
-        success = "#4CAF50",
-        info = "#00BCD4",
-        warning = "#FFC107",
-        danger = "#E91E63",
-        base_font =  font_link(
-          "ABeeZee",
-          href = "https://fonts.bunny.net/css?family=abeezee:400"
+      theme = bslib::bs_theme(brand = path_to_brand_yml),
+
+      navset_bar(
+        id = "nav_pages",
+        title = "Create Stories with AI",
+        navbar_options = navbar_options(position = "fixed-bottom"),
+        # nav_spacer(),
+        # Main
+        nav_panel(
+          "Create Stories",
+          create_hero_section(
+            title = paste0(app_name, ": Create Stories With AI"),
+            subtitle = app_desc
+          ),
+          hr(),
+          mod_create_story_slides_ui("main"),
+          div(style = "margin-bottom: 50px;")
         ),
-        font_scale = 1.2,
-        heading_font = font_link(
-          "Architects Daughter",
-          href = "https://fonts.bunny.net/css?family=architects-daughter:400"
+        # Saved stories
+        nav_panel(
+          "Explore"
         )
-      ),
-      create_hero_section(
-        title = "Create Stories With AI",
-        subtitle = "Create beautiful and alive stories with text-generation and image-generation models!"
-      ),
-
-      br(),
-      br(),
-      hr(),
-      br(),
-      br(),
-
-      mod_create_story_slides_ui("main")
+      )
 
     )
   )

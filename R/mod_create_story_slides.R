@@ -113,21 +113,6 @@ mod_create_story_slides_server <- function(id){
     all_auds <- reactiveVal()
     temp_html_val <- reactiveVal()
 
-    # # Show the default slides before story is created
-    # output$html_story <- renderUI({
-    #
-    #   file_path <- "www/example.html"
-    #
-    #   # Check if file exists before rendering the iframe
-    #   if (!file.exists(app_sys(paste0("app/", file_path)))) {
-    #     return(tags$p("Waiting for the story..."))
-    #   }
-    #
-    #   tags$iframe(src= file_path,
-    #               width="100%",
-    #               height=600)
-    # })
-
     # Dynamically serve the updated HTML file from the temp folder
     output$html_story <- renderUI({
       req(temp_html_val())
