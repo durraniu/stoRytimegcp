@@ -82,10 +82,11 @@ app_server <- function(input, output, session) {
   ## Show image carousel in the hero section
   #--**********************************************
 
-  output$s <- renderSlickR({
-    x <- slickR(obj = paste0("inst/app/www/images/", list.files(app_sys("app/www/images/"))), slideId = "slick1")
-    x + settings(dots = TRUE, autoplay = TRUE, autoplaySpeed = 1000)
-  })
+output$s <- renderSlickR({
+  imgs <- list.files(app_sys("app/www/images/"), full.names = FALSE)
+  urls <- paste0("www/images/", imgs)
+  slickR(obj = urls, slideId = "slick1") + settings(dots = TRUE, autoplay = TRUE, autoplaySpeed = 1000)
+})
 
 
   #--**********************************************
