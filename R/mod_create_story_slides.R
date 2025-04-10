@@ -137,28 +137,93 @@ mod_create_story_slides_server <- function(id){
     story <- reactiveVal()
     all_imgs <- reactiveVal()
     all_auds <- reactiveVal()
-    temp_html_val <- reactiveVal()
+    # temp_html_val <- reactiveVal()
 
     # Dynamically serve the updated HTML file from the temp folder
-    output$html_story <- renderUI({
-      req(temp_html_val())
-      # browser()
-      if (is.null(temp_html_val())){
-        return(tags$p("Waiting for the story..."))
-      }
-      # Check if the file exists before serving
-      if (file.exists(app_sys(paste0("app/www/", temp_html_val())))) {
+    # output$html_story <- renderUI({
+    #   req(temp_html_val())
+    #   # browser()
+    #   if (is.null(temp_html_val())){
+    #     return(tags$p("Waiting for the story..."))
+    #   }
+    #   # Check if the file exists before serving
+    #   if (file.exists(app_sys(paste0("app/www/", temp_html_val())))) {
+    #     tags$iframe(
+    #       src = paste0("www/", temp_html_val()),
+    #       width = "100%",
+    #       height = 600
+    #     )
+    #   } else {
+    #     tags$p("Waiting for the story...")
+    #   }
+    # })
+
+    # Update UI whenever the file changes
+    observe({
+      input$update_theme
+      req(story(), all_imgs())
+
+      output$html_story <- renderUI({
+        # Check if the rendered file exists
+        if (input$aud_on){
+          output_file <- file.path(session_temp_dir, "input_with_audio.html")
+        } else {
+          output_file <- file.path(session_temp_dir, "input.html")
+        }
+        req(file.exists(output_file))
+
+        # Get URL for the temp file with cache busting
+        if (input$aud_on){
+          file_url <- serve_temp_file("input_with_audio.html")
+        } else {
+          file_url <- serve_temp_file("input.html")
+        }
+
         tags$iframe(
-          src = paste0("www/", temp_html_val()),
+          src = file_url,
           width = "100%",
-          height = 600
+          height = 600,
+          # Add a unique key to force iframe refresh
+          key = paste0("story-frame-", as.numeric(Sys.time()))
         )
-      } else {
-        tags$p("Waiting for the story...")
-      }
+      })
     })
 
 
+
+    # Create a temporary directory specific to this session
+    session_temp_dir <- tempfile(pattern = paste0("quarto_output_", session$token, "_"))
+    dir.create(session_temp_dir)
+
+    # Clean up the temporary directory when the session ends
+    onStop(function() {
+      unlink(session_temp_dir, recursive = TRUE)
+    })
+
+    # Function to serve files from the temporary directory
+    serve_temp_file <- function(filename) {
+      file_path <- file.path(session_temp_dir, filename)
+      if (!file.exists(file_path)) {
+        return(NULL)
+      }
+
+      # Create a random identifier for cache busting
+      cache_buster <- paste0("v=", as.numeric(Sys.time()))
+
+      # Remove any existing resource path for this session
+      if (paste0("temp_", session$token) %in% resourcePaths()) {
+        removeResourcePath(paste0("temp_", session$token))
+      }
+
+      # Serve the file with proper mime type
+      shiny::addResourcePath(
+        prefix = paste0("temp_", session$token),
+        directoryPath = session_temp_dir
+      )
+
+      # Return the URL with cache buster
+      paste0("/temp_", session$token, "/", filename, "?", cache_buster)
+    }
 
 
 
@@ -171,7 +236,7 @@ mod_create_story_slides_server <- function(id){
 
       story(NULL)
       all_imgs(NULL)
-      temp_html_val(NULL)
+      # temp_html_val(NULL)
 
       # browser()
 
@@ -244,23 +309,40 @@ mod_create_story_slides_server <- function(id){
             incProgress(0.9, detail = "Generating slides...")
 
             # Create a temp directory
-            temp_dir <- tempdir()
+            # temp_dir <- tempdir()
 
             if (input$aud_on){
 
               # Copy qmd from www folder to temp directory
-              file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
+              # file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
+              file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(session_temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
+
+              # Save current working directory
+              original_wd <- getwd()
+
+              # Change to temp directory for rendering
+              setwd(session_temp_dir)
 
               # Path to the copied qmd file in the temp directory
-              temp_qmd <- file.path(temp_dir, "input_with_audio.qmd")
-              temp_html <- file.path(temp_dir, "input_with_audio.html")
+              # temp_qmd <- file.path(temp_dir, "input_with_audio.qmd")
+              # temp_html <- file.path(temp_dir, "input_with_audio.html")
+              #
+              # unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
+              # final_path <- file.path(app_sys("app/www"), unique_html_filename)
+              # temp_html_val(unique_html_filename)
 
-              unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
-              final_path <- file.path(app_sys("app/www"), unique_html_filename)
-              temp_html_val(unique_html_filename)
+              # create_slides(
+              #   input_qmd = temp_qmd,
+              #   theme = input$story_theme1,
+              #   title = input$story_title,
+              #   prompt = input$story_prompt,
+              #   story = story(),
+              #   all_imgs(),
+              #   all_auds()
+              # )
 
               create_slides(
-                input_qmd = temp_qmd,
+                input_qmd = "input_with_audio.qmd",
                 theme = input$story_theme1,
                 title = input$story_title,
                 prompt = input$story_prompt,
@@ -269,21 +351,42 @@ mod_create_story_slides_server <- function(id){
                 all_auds()
               )
 
-              file.copy(temp_html, final_path, overwrite = TRUE)
+              # file.copy(temp_html, final_path, overwrite = TRUE)
+              setwd(original_wd)
             } else {
-              # Copy qmd from www folder to temp directory
-              file.copy(app_sys("app/www/input.qmd"), file.path(temp_dir, "input.qmd"), overwrite = TRUE)
+              # # Copy qmd from www folder to temp directory
+              # file.copy(app_sys("app/www/input.qmd"), file.path(temp_dir, "input.qmd"), overwrite = TRUE)
+              #
+              # # Path to the copied qmd file in the temp directory
+              # temp_qmd <- file.path(temp_dir, "input.qmd")
+              # temp_html <- file.path(temp_dir, "input.html")
+              #
+              # unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
+              # final_path <- file.path(app_sys("app/www"), unique_html_filename)
+              # temp_html_val(unique_html_filename)
+              #
+              # create_slides(
+              #   input_qmd = temp_qmd,
+              #   theme = input$story_theme1,
+              #   title = input$story_title,
+              #   prompt = input$story_prompt,
+              #   story = story(),
+              #   all_imgs(),
+              #   FALSE
+              # )
+              #
+              # file.copy(temp_html, final_path, overwrite = TRUE)
 
-              # Path to the copied qmd file in the temp directory
-              temp_qmd <- file.path(temp_dir, "input.qmd")
-              temp_html <- file.path(temp_dir, "input.html")
+              file.copy(app_sys("app/www/input.qmd"), file.path(session_temp_dir, "input.qmd"), overwrite = TRUE)
 
-              unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
-              final_path <- file.path(app_sys("app/www"), unique_html_filename)
-              temp_html_val(unique_html_filename)
+              # Save current working directory
+              original_wd <- getwd()
+
+              # Change to temp directory for rendering
+              setwd(session_temp_dir)
 
               create_slides(
-                input_qmd = temp_qmd,
+                input_qmd = "input.qmd",
                 theme = input$story_theme1,
                 title = input$story_title,
                 prompt = input$story_prompt,
@@ -292,7 +395,7 @@ mod_create_story_slides_server <- function(id){
                 FALSE
               )
 
-              file.copy(temp_html, final_path, overwrite = TRUE)
+              setwd(original_wd)
             }
 
 
@@ -320,24 +423,42 @@ mod_create_story_slides_server <- function(id){
         withProgress(message = "Re-generating slides", value = 0, {
 
           # Create a temp directory
-          temp_dir <- tempdir()
+          # temp_dir <- tempdir()
 
           if (input$aud_on){
 
             # Copy qmd from www folder to temp directory
-            file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
+            # file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
 
-            # Path to the copied qmd file in the temp directory
-            temp_qmd <- file.path(temp_dir, "input_with_audio.qmd")
-            temp_html <- file.path(temp_dir, "input_with_audio.html")
+            file.copy(app_sys("app/www/input_with_audio.qmd"), file.path(session_temp_dir, "input_with_audio.qmd"), overwrite = TRUE)
 
-            unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
-            final_path <- file.path(app_sys("app/www"), unique_html_filename)
-            temp_html_val(unique_html_filename)
+            # Save current working directory
+            original_wd <- getwd()
 
+            # Change to temp directory for rendering
+            setwd(session_temp_dir)
+
+            # # Path to the copied qmd file in the temp directory
+            # temp_qmd <- file.path(temp_dir, "input_with_audio.qmd")
+            # temp_html <- file.path(temp_dir, "input_with_audio.html")
+            #
+            # unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
+            # final_path <- file.path(app_sys("app/www"), unique_html_filename)
+            # temp_html_val(unique_html_filename)
+            #
+            # create_slides(
+            #   input_qmd = temp_qmd,
+            #   theme = input$story_theme2,
+            #   title = input$story_title,
+            #   prompt = input$story_prompt,
+            #   story = story(),
+            #   all_imgs(),
+            #   all_auds()
+            # )
+            #
             create_slides(
-              input_qmd = temp_qmd,
-              theme = input$story_theme2,
+              input_qmd = "input_with_audio.qmd",
+              theme = input$story_theme1,
               title = input$story_title,
               prompt = input$story_prompt,
               story = story(),
@@ -345,22 +466,21 @@ mod_create_story_slides_server <- function(id){
               all_auds()
             )
 
-            file.copy(temp_html, final_path, overwrite = TRUE)
+            # file.copy(temp_html, final_path, overwrite = TRUE)
+            setwd(original_wd)
           } else {
-            # Copy qmd from www folder to temp directory
-            file.copy(app_sys("app/www/input.qmd"), file.path(temp_dir, "input.qmd"), overwrite = TRUE)
 
-            # Path to the copied qmd file in the temp directory
-            temp_qmd <- file.path(temp_dir, "input.qmd")
-            temp_html <- file.path(temp_dir, "input.html")
+            file.copy(app_sys("app/www/input.qmd"), file.path(session_temp_dir, "input.qmd"), overwrite = TRUE)
 
-            unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
-            final_path <- file.path(app_sys("app/www"), unique_html_filename)
-            temp_html_val(unique_html_filename)
+            # Save current working directory
+            original_wd <- getwd()
+
+            # Change to temp directory for rendering
+            setwd(session_temp_dir)
 
             create_slides(
-              input_qmd = temp_qmd,
-              theme = input$story_theme2,
+              input_qmd = "input.qmd",
+              theme = input$story_theme1,
               title = input$story_title,
               prompt = input$story_prompt,
               story = story(),
@@ -368,7 +488,30 @@ mod_create_story_slides_server <- function(id){
               FALSE
             )
 
-            file.copy(temp_html, final_path, overwrite = TRUE)
+            setwd(original_wd)
+
+            # Copy qmd from www folder to temp directory
+            # file.copy(app_sys("app/www/input.qmd"), file.path(temp_dir, "input.qmd"), overwrite = TRUE)
+            #
+            # # Path to the copied qmd file in the temp directory
+            # temp_qmd <- file.path(temp_dir, "input.qmd")
+            # temp_html <- file.path(temp_dir, "input.html")
+            #
+            # unique_html_filename <- paste0("story_", Sys.time() |> format("%Y%m%d%H%M%S"), ".html")
+            # final_path <- file.path(app_sys("app/www"), unique_html_filename)
+            # temp_html_val(unique_html_filename)
+            #
+            # create_slides(
+            #   input_qmd = temp_qmd,
+            #   theme = input$story_theme2,
+            #   title = input$story_title,
+            #   prompt = input$story_prompt,
+            #   story = story(),
+            #   all_imgs(),
+            #   FALSE
+            # )
+            #
+            # file.copy(temp_html, final_path, overwrite = TRUE)
           }
 
 
@@ -385,11 +528,27 @@ mod_create_story_slides_server <- function(id){
 
 
 
-    output$download_ui <- renderUI({
-      req(temp_html_val())
-      target_html <- app_sys(file.path("app/www/", temp_html_val()))
+    # output$download_ui <- renderUI({
+    #   req(temp_html_val())
+    #   target_html <- app_sys(file.path("app/www/", temp_html_val()))
+    #
+    #   if (file.exists(target_html)) {
+    #     downloadButton(ns("download_html"), "Download Story", class = "btn-primary")
+    #   } else {
+    #     # tags$p("No story available for download yet.")
+    #   }
+    # })
 
-      if (file.exists(target_html)) {
+
+    output$download_ui <- renderUI({
+      req(story(), all_imgs())
+      if (input$aud_on){
+        story_file <- file.path(session_temp_dir, "input_with_audio.html")
+      } else {
+        story_file <- file.path(session_temp_dir, "input.html")
+      }
+
+      if (file.exists(story_file)) {
         downloadButton(ns("download_html"), "Download Story", class = "btn-primary")
       } else {
         # tags$p("No story available for download yet.")
@@ -398,21 +557,41 @@ mod_create_story_slides_server <- function(id){
 
 
 
+    # output$download_html <- downloadHandler(
+    #   filename = function() {
+    #     "generated_story.html"
+    #   },
+    #   content = function(file) {
+    #     target_html <- app_sys(paste0("app/www/", temp_html_val()))
+    #
+    #     # Ensure the file exists before allowing the download
+    #     if (file.exists(target_html)) {
+    #       # Copy the generated HTML file to the specified download location
+    #       file.copy(target_html, file)
+    #     } else {
+    #       showNotification("No story available for download yet.", type = "error")
+    #     }
+    #   }
+    # )
+
     output$download_html <- downloadHandler(
       filename = function() {
         "generated_story.html"
       },
       content = function(file) {
-        target_html <- app_sys(paste0("app/www/", temp_html_val()))
-
-        # Ensure the file exists before allowing the download
-        if (file.exists(target_html)) {
-          # Copy the generated HTML file to the specified download location
-          file.copy(target_html, file)
+        if (input$aud_on){
+          story_file <- file.path(session_temp_dir, "input_with_audio.html")
         } else {
-          showNotification("No story available for download yet.", type = "error")
+          story_file <- file.path(session_temp_dir, "input.html")
+        }
+        if (file.exists(story_file)) {
+          file.copy(story_file, file)
+        } else {
+          stop("No story has been generated yet")
         }
       }
     )
+
+
   })
 }
