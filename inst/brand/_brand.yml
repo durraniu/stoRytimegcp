@@ -1,0 +1,30 @@
+meta:
+  name: stoRytime
+  description: |
+    Create beautiful and alive stories with text-generation and image-generation models!
+
+color:
+  palette:
+    foregroundcolor: "#61212D"
+    backgroundcolor: "#ffffff"
+    secondarycolor: "#03A9F4"
+    infocolor: "#00BCD4"
+  foreground: foregroundcolor
+  background: backgroundcolor
+  primary: foregroundcolor
+  secondary: secondarycolor
+  info: infocolor
+
+typography:
+  fonts:
+    - family: ABeeZee
+      source: bunny
+    - family: Architects Daughter
+      source: bunny
+    - family: sans-serif
+      source: system
+
+  base:
+    family: ABeeZee, sans-serif
+  headings:
+    family: Architects Daughter, sans-serif

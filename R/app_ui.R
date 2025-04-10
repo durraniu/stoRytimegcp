@@ -4,75 +4,49 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @import bslib
+#' @import slickR
 #' @noRd
 app_ui <- function(request) {
+
+  path_to_brand_yml <- app_sys("brand/_brand.yml")
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
     page_fluid(
-      theme = bs_theme(version = 5, bootswatch = "darkly"),
+      theme = bslib::bs_theme(brand = path_to_brand_yml),
 
-      layout_columns(
-        col_widths = breakpoints(
-          sm = c(12),
-          md = c(12),
-          lg = c(3, 9)
+      navset_bar(
+        id = "nav_pages",
+        title = "Create Stories with AI",
+        navbar_options = navbar_options(position = "fixed-bottom"),
+        # nav_spacer(),
+        # Main
+        nav_panel(
+          "Create Stories",
+          create_hero_section(
+            title = paste0(app_name, ": Create Stories With AI"),
+            subtitle = app_desc
+          ),
+          hr(),
+          mod_create_story_slides_ui("main"),
+          div(style = "margin-bottom: 50px;")
         ),
-        card(
-          card_header("Settings"),
-          textAreaInput(
-            "story_prompt",
-            label = "Write the first sentence of your story:",
-            width = "100%",
-            height = "100px"
-          ),
-          numericInput("num_of_sentences",
-                       label = "Number of sentences:",
-                       value = 5, #min = 3, max = 10
-                       ),
-          textAreaInput(
-            "drawing_instructions",
-            label = "Instructions for drawing images:",
-            value = drawing_instructions,
-            width = "100%",
-            height = "200px"
-          ),
-          textInput(
-            "story_title",
-            label = "Provide a story title:",
-            value = "stoRy time with shiny and quarto"
-          ),
-          bslib::input_task_button("create_story", "Create Story")
-          # actionButton("create_story", "Create Story")
-        ),
-
-        card(
-          id = "story_card",
-          card_header(
-            "Story",
-            popover(
-              placement = "right",
-              bsicons::bs_icon("gear", class = "ms-auto"),
-              selectInput(
-                selectize = FALSE,
-                "story_theme",
-                label = "Select theme:",
-                choices = c("dark", "beige", "blood", "league", "moon", "night",
-                            "serif", "simple", "sky", "solarized", "default")
-              ),
-              bslib::input_task_button("update_theme", "Update Theme"),
-              # actionButton("update_theme", "Update Theme"),
-              title = "Presentation settings"
-            ),
-            class = "d-flex align-items-center gap-1"
-          ),
-          htmlOutput("html_story"),
-          downloadButton("download_html", "Download Story"),
-          min_height = 600
+        # Saved stories
+        nav_panel(
+          "Explore",
+          layout_column_wrap(
+            width = 1/2,
+            mod_download_stories_ui("apocalypse", "Apocalypse"),
+            mod_download_stories_ui("dracula", "Dracula"),
+            mod_download_stories_ui("future", "Future"),
+            mod_download_stories_ui("harry_potter_dream", "Harry Potter Dream"),
+            mod_download_stories_ui("narnia", "Narnia")
+          )
         )
-
       )
+
     )
   )
 }
@@ -84,6 +58,7 @@ app_ui <- function(request) {
 #'
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
+#' @importFrom shinyjs useShinyjs
 #' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
@@ -98,18 +73,7 @@ golem_add_external_resources <- function() {
       app_title = "stoRytimegcp"
     ),
     # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
-    # shinyalert::useShinyalert(force = TRUE),
     useBusyIndicators(),
-    # waiter::useWaiter(), # include dependencies
-    # htmltools::findDependencies(selectInput("test", "test", NULL)),
-    # shiny.telemetry::use_telemetry(),
-    tags$script(HTML('
-      $(document).on("click", "#create_story", function() {
-        $("html, body").animate({
-          scrollTop: $("#story_card").offset().top
-        }, 1000);
-      });
-    '))
+    useShinyjs()
   )
 }

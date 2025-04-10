@@ -6,7 +6,8 @@
 \usage{
 req_single_image(
   prompt,
-  instructions,
+  negative_prompt,
+  num_steps = 10,
   ACCOUNT_ID = Sys.getenv("ACCOUNT_ID"),
   API_KEY = Sys.getenv("API_KEY"),
   base_url = cf_base_url()
@@ -15,7 +16,9 @@ req_single_image(
 \arguments{
 \item{prompt}{Description of image}
 
-\item{instructions}{Instructions for image drawing}
+\item{negative_prompt}{Description of what to exclude}
+
+\item{num_steps}{Number of diffusion steps. Max 20}
 
 \item{ACCOUNT_ID}{Cloudflare Workers AI Model API account ID}
 

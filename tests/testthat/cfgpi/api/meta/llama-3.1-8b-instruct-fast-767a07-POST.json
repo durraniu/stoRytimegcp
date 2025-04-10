@@ -1,0 +1,17 @@
+{
+    "result": {
+        "response": "Snow White, a young woman with long, platinum blonde hair, bright blue eyes, and a small nose, wearing a blue dress with white flowers and white boots, is standing in front of a small, cozy cottage that is nestled among the tall trees, its roof covered in a thick layer of snow that glistens like a thousand tiny diamonds in the warm sunlight. Snow White, a young woman with long, platinum blonde hair, bright blue eyes, and a small nose, wearing a blue dress with white flowers and white boots, is walking through a warm and inviting hallway lined with cobweb-covered portraits of her ancestors, their faces smiling down at her with kind eyes and gentle smiles, the portraits are hung on the walls with gold frames and the hallway is lit by soft, warm light. Snow White, a young woman with long, platinum blonde hair, bright blue eyes, and a small nose, wearing a blue dress with white flowers and white boots, is standing in front of an old woman who is sitting by the fireplace, stirring a big pot of steaming hot soup, the old woman has a kind face with a warm smile and a few wisps of gray hair escaping from her white cap, the fireplace is surrounded by a brick hearth and there is a big window with curtains on the side. Snow White, a young woman with long, platinum blonde hair, bright blue eyes, and a small nose, wearing a blue dress with white flowers and white boots, is sitting at a wooden table with a beautiful feast laid out in front of her, the table is set with golden plates, sparkling glasses, and a delicious-looking cake that is adorned with colorful flowers and candies, the room is warm and cozy with a big window on the side. Snow White, a young woman with long, platinum blonde hair, bright blue eyes, and a small nose, wearing a blue dress with white flowers and white boots, is standing in front of an old woman who is whispering to her that it is the wicked queen, who has a pale face with a sharp nose and a cold stare, the old woman is standing by the door with a look of concern on her face and the door is slightly ajar, showing a dark and ominous hallway beyond.",
+        "usage": {
+            "prompt_tokens": 824,
+            "completion_tokens": 453,
+            "total_tokens": 1277
+        }
+    },
+    "success": true,
+    "errors": [
+
+    ],
+    "messages": [
+
+    ]
+}
